@@ -5,12 +5,21 @@ calculateButton.addEventListener("click", () => {
     const depositAmount = Number(document.getElementById("deposit-amount").value);
     const annualIncome = Number(document.getElementById("annual-income").value);
 
-    let requiredBorrowingParagraph = document.createElement("p");
-    requiredBorrowingParagraph.innerHTML = "Required Borrowing: " + calculateRequiredBorrowing(housePrice, depositAmount);
-    document.body.appendChild(requiredBorrowingParagraph);
+    const availableAmount = calculateAvailableBorrowing(annualIncome);
+    const requiredAmount = calculateRequiredBorrowing(housePrice, depositAmount);
 
-    console.log("required borrowing: ", calculateRequiredBorrowing(housePrice, depositAmount));
-    console.log("available borrowing: ", calculateAvailableBorrowing(annualIncome));
+    let p = document.createElement("p");
+
+    if (availableAmount >= requiredAmount) {
+        p.innerHTML = `Great news! You can likely borrow ${availableAmount} which is more than you're required borrowing of ${requiredAmount}`;
+        document.body.appendChild(p);
+    } else {
+        p.innerHTML = `Bad news! You require ${requiredAmount} but can only borrow ${availableAmount}`;
+        document.body.appendChild(p);
+    }
+
+    console.log("available borrowing: ", availableAmount);
+    console.log("required borrowing: ", requiredAmount);
 });
 
 function calculateRequiredBorrowing(housePrice, depositAmount) {
@@ -22,4 +31,5 @@ function calculateAvailableBorrowing(annualIncome) {
     const availableBorrowing = (annualIncome * 4);
     return availableBorrowing;
 }
+
 
