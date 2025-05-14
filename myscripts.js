@@ -1,6 +1,6 @@
-const calculateButton = document.getElementById("calculate-borrowing-btn");
+const calculateBorrowingBtn = document.getElementById("calculate-borrowing-btn");
 
-calculateButton.addEventListener("click", () => {
+calculateBorrowingBtn.addEventListener("click", () => {
     const housePrice = Number(document.getElementById("house-price").value);
     const depositAmount = Number(document.getElementById("deposit-amount").value);
     const annualIncome = Number(document.getElementById("annual-income").value);
@@ -27,4 +27,11 @@ function calculateAvailableBorrowing(annualIncome) {
     return (annualIncome * 4);
 }
 
+const calculateMonthlyCostBtn = document.getElementById("calculate-monthly-cost-btn");
 
+calculateMonthlyCostBtn.addEventListener("click", () => {
+    const interestRate = Number(document.getElementById("interest-rate").value);
+    const mortgageTerm = Number(document.getElementById("mortgage-term").value);
+
+    console.log(interestRate, mortgageTerm);
+});
