@@ -8,8 +8,8 @@
     <title>Document</title>
 </head>
 <body>
-    <h2>How much can I borrow?</h2>
-        <form id="form" onsubmit="return false;">
+    <h2> How much can I borrow? </h2>
+        <form id="borrowing-amount-form" onsubmit="return false;">
             <label for="house-price">house price:</label>
             <input type="text" id="house-price" name="house-price"><br>
 
@@ -19,7 +19,18 @@
             <label for="annual-income">annual income:</label>
             <input type="text" id="annual-income" name="annual-income"><br>
 
-            <button id="calculate-btn">Calculate</button>
+            <button id="calculate-borrowing-btn">Calculate borrowing</button>
+        </form>
+
+    <h2> What is the monthly cost? </h2>
+        <form id="monthly-cost-form" onsubmit="return false;">
+            <label for="interest-rate">interest rate:</label>
+            <input type="text" id="interest-rate" name="interest-rate"><br>
+
+            <label for="mortgage-term">mortgage term:</label>
+            <input type="text" id="mortgage-term" name="mortgage-term"><br>
+
+            <button id="calculate-monthly-cost-btn">Calculate monthly cost</button>
         </form>
 </body>
 </html>

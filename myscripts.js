@@ -1,4 +1,4 @@
-const calculateButton = document.getElementById("calculate-btn");
+const calculateButton = document.getElementById("calculate-borrowing-btn");
 
 calculateButton.addEventListener("click", () => {
     const housePrice = Number(document.getElementById("house-price").value);
@@ -8,14 +8,14 @@ calculateButton.addEventListener("click", () => {
     const availableBorrowing = calculateAvailableBorrowing(annualIncome);
     const requiredBorrowing = calculateRequiredBorrowing(housePrice, depositAmount);
 
-    let p = document.createElement("p");
+    let affordabilityDisplay = document.createElement("p");
 
     if (availableBorrowing >= requiredBorrowing) {
-        p.innerHTML = `Great news! You can likely borrow £${availableBorrowing} which is more than you're required borrowing of £${requiredBorrowing}`;
-        document.body.appendChild(p);
+        affordabilityDisplay.innerHTML = `Great news! You can likely borrow £${availableBorrowing} which is more than you're required borrowing of £${requiredBorrowing}`;
+        document.body.appendChild(affordabilityDisplay);
     } else {
-        p.innerHTML = `Bad news! You require £${requiredBorrowing} but can only borrow £${availableBorrowing}`;
-        document.body.appendChild(p);
+        affordabilityDisplay.innerHTML = `Bad news! You require £${requiredBorrowing} but can only borrow £${availableBorrowing}`;
+        document.body.appendChild(affordabilityDisplay);
     }
 });
 
