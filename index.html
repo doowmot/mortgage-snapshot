@@ -9,7 +9,7 @@
 </head>
 <body>
     <h2>How much can I borrow?</h2>
-        <form>
+        <form id="form" onsubmit="return false;">
             <label for="house-price">house price:</label>
             <input type="text" id="house-price" name="house-price"><br>
 
@@ -18,8 +18,8 @@
 
             <label for="annual-income">annual income:</label>
             <input type="text" id="annual-income" name="annual-income"><br>
-            
-            <input type="submit" value="calculate">
+
+            <button id="calculate-btn">Calculate</button>
         </form>
 </body>
 </html>
