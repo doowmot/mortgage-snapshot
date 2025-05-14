@@ -5,14 +5,18 @@ calculateButton.addEventListener("click", () => {
     const depositAmount = Number(document.getElementById("deposit-amount").value);
     const annualIncome = Number(document.getElementById("annual-income").value);
 
-    const requiredBorrowing = (housePrice - depositAmount);
-
     let requiredBorrowingParagraph = document.createElement("p");
-    requiredBorrowingParagraph.innerHTML = "Required Borrowing: " + requiredBorrowing;
+    requiredBorrowingParagraph.innerHTML = "Required Borrowing: " + calculateRequiredBorrowing(housePrice, depositAmount);
     document.body.appendChild(requiredBorrowingParagraph);
 
-    console.log(calculateAvailableBorrowing(annualIncome));
+    console.log("required borrowing: ", calculateRequiredBorrowing(housePrice, depositAmount));
+    console.log("available borrowing: ", calculateAvailableBorrowing(annualIncome));
 });
+
+function calculateRequiredBorrowing(housePrice, depositAmount) {
+    const requiredBorrowing = (housePrice - depositAmount);
+    return requiredBorrowing;
+}
 
 function calculateAvailableBorrowing(annualIncome) {
     const availableBorrowing = (annualIncome * 4);
