@@ -30,23 +30,25 @@ function calculateAvailableBorrowing(annualIncome) {
 const calculateMonthlyCostBtn = document.getElementById("calculate-monthly-cost-btn");
 
 calculateMonthlyCostBtn.addEventListener("click", () => {
-    const interestRate = Number(document.getElementById("interest-rate").value);
+    const annualInterestRate = Number(document.getElementById("annual-interest-rate").value);
     const mortgageTerm = Number(document.getElementById("mortgage-term").value);
-    console.log(interestRate, mortgageTerm);
 
     const housePrice = Number(document.getElementById("house-price").value);
     const depositAmount = Number(document.getElementById("deposit-amount").value);
 
     const requiredBorrowing = calculateRequiredBorrowing(housePrice, depositAmount);
 
-    monthlyCost = calculateMonthlyCost(requiredBorrowing, interestRate, mortgageTerm);
+    const monthlyCost = calculateMonthlyCost(requiredBorrowing, annualInterestRate, mortgageTerm);
 
     const monthlyCostDisplay = document.createElement("p");
     monthlyCostDisplay.innerHTML = `it will cost you £${monthlyCost} over a ${mortgageTerm} year mortgage term`;
     document.body.appendChild(monthlyCostDisplay);
 });
 
+function calculateMonthlyCost(requiredBorrowing, annualInterestRate, mortgageTerm) {
+    const monthlyInterestRate = (annualInterestRate / 100) / 12;
+    const numberOfPaymentMonths = mortgageTerm * 12;
 
-function calculateMonthlyCost(requiredBorrowing, interestRate, mortgageTerm) {
-    return requiredBorrowing / mortgageTerm; // incorrect formula --- for testing
+    return Math.round(requiredBorrowing * monthlyInterestRate * (Math.pow(1+monthlyInterestRate, numberOfPaymentMonths)) / (Math.pow(1+monthlyInterestRate, numberOfPaymentMonths) -1));
 }
+
