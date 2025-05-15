@@ -1,3 +1,12 @@
+const affordabilityDisplay = document.createElement("p");
+document.body.appendChild(affordabilityDisplay);
+
+const monthlyCostDisplay = document.createElement("p");
+document.body.appendChild(monthlyCostDisplay);
+
+const totalCostDisplay = document.createElement("p");
+document.body.appendChild(totalCostDisplay);
+
 const calculateBorrowingBtn = document.getElementById("calculate-borrowing-btn");
 
 calculateBorrowingBtn.addEventListener("click", () => {
@@ -8,14 +17,10 @@ calculateBorrowingBtn.addEventListener("click", () => {
     const availableBorrowing = calculateAvailableBorrowing(annualIncome);
     const requiredBorrowing = calculateRequiredBorrowing(housePrice, depositAmount);
 
-    let affordabilityDisplay = document.createElement("p");
-
     if (availableBorrowing >= requiredBorrowing) {
         affordabilityDisplay.innerHTML = `Great news! You can likely borrow £${availableBorrowing} which is more than you're required borrowing of £${requiredBorrowing}`;
-        document.body.appendChild(affordabilityDisplay);
     } else {
         affordabilityDisplay.innerHTML = `Bad news! You require £${requiredBorrowing} but can only borrow £${availableBorrowing}`;
-        document.body.appendChild(affordabilityDisplay);
     }
 });
 
@@ -40,13 +45,8 @@ calculateMonthlyCostBtn.addEventListener("click", () => {
     const totalCost = calculateTotalCost(monthlyCost, mortgageTerm);
     const totalInterestCost = totalCost - requiredBorrowing;
 
-    const monthlyCostDisplay = document.createElement("p");
     monthlyCostDisplay.innerHTML = `You will pay £${monthlyCost} per month`;
-    document.body.appendChild(monthlyCostDisplay);
-
-    const totalCostDisplay = document.createElement("p");
     totalCostDisplay.innerHTML = `You will pay £${totalCost} over a ${mortgageTerm} year mortgage term (amount you borrowed: £${requiredBorrowing} + interest charged: £${totalInterestCost})`;
-    document.body.appendChild(totalCostDisplay);
 });
 
 function calculateMonthlyCost(requiredBorrowing, annualInterestRate, mortgageTerm) {
