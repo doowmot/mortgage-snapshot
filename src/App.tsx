@@ -102,7 +102,7 @@ function App() {
           <label>
             Interest Rate:
             <input 
-              type="number" 
+              type="float" 
               name="annualInterestRate"
               value={formData.annualInterestRate} 
               onChange={handleChange}
