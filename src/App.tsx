@@ -5,10 +5,12 @@ function App() {
   const [formData, setFormData] = useState({
     depositAmount: "",
     annualIncome: "",
-    propertyValue: "",
-    interestRate: "",
+    propertyPrice: "",
+    annualInterestRate: "",
     mortgageTerm: "",
+    borrowingAvailable: "",
     borrowingAmount: "",
+    monthlyCost: "",
   });
 
   const handleChange = (event) => {
@@ -19,15 +21,21 @@ function App() {
   const handleSubmit = (event) => {
     event.preventDefault();
     
-    let borrowingAmount = formData.annualIncome * 4;
+    const borrowingAvailable = formData.annualIncome * 4;
+    const monthlyInterestRate = (formData.annualInterestRate / 100) / 12;
+    const numberOfPaymentMonths = formData.mortgageTerm * 12;
+
+    const borrowingAmount = (formData.propertyPrice - formData.depositAmount)
+
+    const monthlyCost = Math.round(borrowingAmount * monthlyInterestRate * (Math.pow(1+monthlyInterestRate, numberOfPaymentMonths)) / (Math.pow(1+monthlyInterestRate, numberOfPaymentMonths) -1));
 
     setFormData(prevState => ({
         ...prevState,
-        borrowingAmount: `You can likely borrow £${borrowingAmount}`
+        borrowingAvailable: `You can likely borrow: £${borrowingAvailable}`,
+        monthlyCost: `Your monthly payment will be: £${monthlyCost} per month`
     }));
     }
   
-
   return (
     <>
       <div>
@@ -50,7 +58,7 @@ function App() {
               onChange={handleChange}
             />
           <input type="submit" value="calculate"/>
-          <p>{formData.borrowingAmount}</p>
+          <p>{formData.borrowingAvailable}</p>
         </form>
       </div>
 
@@ -70,8 +78,8 @@ function App() {
             Property Value:
             <input 
               type="number" 
-              name="propertyValue"
-              value={formData.propertyValue} 
+              name="propertyPrice"
+              value={formData.propertyPrice} 
               onChange={handleChange}
               />
           </label>
@@ -79,8 +87,8 @@ function App() {
             Interest Rate:
             <input 
               type="number" 
-              name="interestRate"
-              value={formData.interestRate} 
+              name="annualInterestRate"
+              value={formData.annualInterestRate} 
               onChange={handleChange}
               />
           </label>
@@ -93,7 +101,7 @@ function App() {
               onChange={handleChange}
             />
           </label>
-          <input type="submit" />
+          <input type="submit" value="calculate" />
           <p>{formData.monthlyCost}</p>
         </form>
         </div>
