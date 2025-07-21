@@ -39,6 +39,7 @@ function App() {
   
   return (
     <>
+      <h1> Mortgage Calculator </h1>
       <div>
         <h2> How much can i borrow?</h2>
         <form onSubmit={handleSubmit}>
@@ -76,7 +77,7 @@ function App() {
             />
           </label>
           <label>
-            Property Value:
+            Property Price:
             <input 
               type="number" 
               name="propertyPrice"
