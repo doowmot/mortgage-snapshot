@@ -24,21 +24,30 @@ function App() {
     event.preventDefault();
     
     const borrowingAvailable = formData.annualIncome * 4;
+    const displayBorrowingAvailable = new Intl.NumberFormat().format(borrowingAvailable);
+
     const monthlyInterestRate = (formData.annualInterestRate / 100) / 12;
     const numberOfPaymentMonths = formData.mortgageTerm * 12;
     const borrowingAmount = (formData.propertyPrice - formData.depositAmount)
 
     const monthlyCost = Math.round(borrowingAmount * monthlyInterestRate * (Math.pow(1+monthlyInterestRate, numberOfPaymentMonths)) / (Math.pow(1+monthlyInterestRate, numberOfPaymentMonths) -1));
+    const displayMonthlyCost = new Intl.NumberFormat().format(monthlyCost);
+    
     const totalCost = monthlyCost * numberOfPaymentMonths;
+    const displayTotalCost = new Intl.NumberFormat().format(totalCost);
+
     const totalInterestCost = totalCost - borrowingAmount;
+    const displayTotalInterestCost = new Intl.NumberFormat().format(totalInterestCost);
+
     const totalCapitalCost = borrowingAmount;
+    const displayTotalCapitalCost = new Intl.NumberFormat().format(totalCapitalCost);
 
     setFormData(prevState => ({
         ...prevState,
-        borrowingAvailable: `You can likely borrow: £${borrowingAvailable}`,
-        monthlyCost: `Your monthly payment will be: £${monthlyCost} per month`,
-        totalCost: `You will pay: £${totalCost} over the ${formData.mortgageTerm} year mortgage term`,
-        totalCostBreakdown: `This is made up of: £${totalCapitalCost} Capital and £${totalInterestCost} Interest`,
+        borrowingAvailable: `You can likely borrow up to: £${displayBorrowingAvailable}`,
+        monthlyCost: `Your monthly payment will be: £${displayMonthlyCost} per month`,
+        totalCost: `You will pay: £${displayTotalCost} over the ${formData.mortgageTerm} year mortgage term`,
+        totalCostBreakdown: `This is made up of: £${displayTotalCapitalCost} Capital and £${displayTotalInterestCost} Interest`,
     }));
     }
   
