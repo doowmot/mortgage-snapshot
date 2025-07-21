@@ -11,6 +11,7 @@ function App() {
     borrowingAvailable: "",
     borrowingAmount: "",
     monthlyCost: "",
+    totalCost: "",
   });
 
   const handleChange = (event) => {
@@ -24,15 +25,15 @@ function App() {
     const borrowingAvailable = formData.annualIncome * 4;
     const monthlyInterestRate = (formData.annualInterestRate / 100) / 12;
     const numberOfPaymentMonths = formData.mortgageTerm * 12;
-
     const borrowingAmount = (formData.propertyPrice - formData.depositAmount)
-
     const monthlyCost = Math.round(borrowingAmount * monthlyInterestRate * (Math.pow(1+monthlyInterestRate, numberOfPaymentMonths)) / (Math.pow(1+monthlyInterestRate, numberOfPaymentMonths) -1));
+    const totalCost = monthlyCost * numberOfPaymentMonths;
 
     setFormData(prevState => ({
         ...prevState,
         borrowingAvailable: `You can likely borrow: £${borrowingAvailable}`,
-        monthlyCost: `Your monthly payment will be: £${monthlyCost} per month`
+        monthlyCost: `Your monthly payment will be: £${monthlyCost} per month`,
+        totalCost: `You will pay: £${totalCost} over the ${formData.mortgageTerm} year mortgage term`
     }));
     }
   
@@ -103,6 +104,7 @@ function App() {
           </label>
           <input type="submit" value="calculate" />
           <p>{formData.monthlyCost}</p>
+          <p>{formData.totalCost}</p>
         </form>
         </div>
     </>
