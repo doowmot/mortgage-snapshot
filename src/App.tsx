@@ -3,11 +3,11 @@ import { useState } from "react";
 
 function App() {
   const [formData, setFormData] = useState({
-    depositAmount: "",
-    annualIncome: "",
-    propertyPrice: "",
-    annualInterestRate: "",
-    mortgageTerm: "",
+    depositAmount: "25000",
+    annualIncome: "50000",
+    propertyPrice: "250000",
+    annualInterestRate: "5",
+    mortgageTerm: "30",
     borrowingAvailable: "",
     borrowingAmount: "",
     monthlyCost: "",
