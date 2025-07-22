@@ -13,6 +13,7 @@ function App() {
     monthlyCost: "",
     totalCost: "",
     totalCostBreakdown: "",
+    stressTestMonthlyCost: "",
   });
 
   const handleChange = (event) => {
@@ -42,12 +43,18 @@ function App() {
     const totalCapitalCost = borrowingAmount;
     const displayTotalCapitalCost = new Intl.NumberFormat().format(totalCapitalCost);
 
+    const stressTestAnnualInterestRate = parseFloat(formData.annualInterestRate) + 3;
+    const stressTestMonthlyInterestRate = (stressTestAnnualInterestRate / 100) / 12;
+    const stressTestMonthlyCost = Math.round(borrowingAmount * stressTestMonthlyInterestRate * (Math.pow(1+stressTestMonthlyInterestRate, numberOfPaymentMonths)) / (Math.pow(1+stressTestMonthlyInterestRate, numberOfPaymentMonths) -1));
+
+
     setFormData(prevState => ({
         ...prevState,
         borrowingAvailable: `You can likely borrow up to: £${displayBorrowingAvailable}`,
-        monthlyCost: `Your monthly payment will be: £${displayMonthlyCost} per month`,
+        monthlyCost: `Your monthly payment will be: £${displayMonthlyCost}`,
         totalCost: `You will pay: £${displayTotalCost} over the ${formData.mortgageTerm} year mortgage term`,
         totalCostBreakdown: `This is made up of: £${displayTotalCapitalCost} Capital and £${displayTotalInterestCost} Interest`,
+        stressTestMonthlyCost: `Disclaimer: If your interest rate goes up by 3%, your monthly payment will be: £${stressTestMonthlyCost}`
     }));
     }
   
@@ -121,6 +128,7 @@ function App() {
           <p>{formData.monthlyCost}</p>
           <p>{formData.totalCost}</p>
           <p>{formData.totalCostBreakdown}</p>
+          <p>{formData.stressTestMonthlyCost}</p>
         </form>
         </div>
     </>
