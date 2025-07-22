@@ -46,7 +46,7 @@ function App() {
     const stressTestAnnualInterestRate = parseFloat(formData.annualInterestRate) + 3;
     const stressTestMonthlyInterestRate = (stressTestAnnualInterestRate / 100) / 12;
     const stressTestMonthlyCost = Math.round(borrowingAmount * stressTestMonthlyInterestRate * (Math.pow(1+stressTestMonthlyInterestRate, numberOfPaymentMonths)) / (Math.pow(1+stressTestMonthlyInterestRate, numberOfPaymentMonths) -1));
-
+    const displayStressTestMonthlyCost = new Intl.NumberFormat().format(stressTestMonthlyCost);
 
     setFormData(prevState => ({
         ...prevState,
@@ -54,7 +54,7 @@ function App() {
         monthlyCost: `Your monthly payment will be: £${displayMonthlyCost}`,
         totalCost: `You will pay: £${displayTotalCost} over the ${formData.mortgageTerm} year mortgage term`,
         totalCostBreakdown: `This is made up of: £${displayTotalCapitalCost} Capital and £${displayTotalInterestCost} Interest`,
-        stressTestMonthlyCost: `Disclaimer: If your interest rate goes up by 3%, your monthly payment will be: £${stressTestMonthlyCost}`
+        stressTestMonthlyCost: `Disclaimer: If your interest rate goes up by 3%, your monthly payment will be: £${displayStressTestMonthlyCost}`
     }));
     }
   
