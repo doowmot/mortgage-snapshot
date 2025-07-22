@@ -48,6 +48,20 @@ function App() {
     const stressTestMonthlyCost = Math.round(borrowingAmount * stressTestMonthlyInterestRate * (Math.pow(1+stressTestMonthlyInterestRate, numberOfPaymentMonths)) / (Math.pow(1+stressTestMonthlyInterestRate, numberOfPaymentMonths) -1));
     const displayStressTestMonthlyCost = new Intl.NumberFormat().format(stressTestMonthlyCost);
 
+    const yearlyData = [];
+    let currentBalance = borrowingAmount;
+
+    for (let month = 1; month <= numberOfPaymentMonths; month++) {
+      const monthlyInterest = currentBalance * monthlyInterestRate;
+      const monthlyPrincipal = monthlyCost - monthlyInterest;
+      currentBalance = currentBalance - monthlyPrincipal;
+    
+      if (month % 12 === 0) {
+        const year = month / 12;
+        yearlyData.push({ year: year, balance: currentBalance });
+      }
+    }
+
     setFormData(prevState => ({
         ...prevState,
         borrowingAvailable: `You can likely borrow up to: £${displayBorrowingAvailable}`,
