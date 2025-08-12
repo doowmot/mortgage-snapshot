@@ -14,6 +14,7 @@ function App() {
     totalCost: "",
     totalCostBreakdown: "",
     stressTestMonthlyCost: "",
+    yearlyData: [],
   });
 
   const handleChange = (event) => {
@@ -68,7 +69,8 @@ function App() {
         monthlyCost: `Your monthly payment will be: £${displayMonthlyCost}`,
         totalCost: `You will pay: £${displayTotalCost} over the ${formData.mortgageTerm} year mortgage term`,
         totalCostBreakdown: `This is made up of: £${displayTotalCapitalCost} Capital and £${displayTotalInterestCost} Interest`,
-        stressTestMonthlyCost: `Disclaimer: If your interest rate goes up by 3%, your monthly payment will be: £${displayStressTestMonthlyCost}`
+        stressTestMonthlyCost: `Disclaimer: If your interest rate goes up by 3%, your monthly payment will be: £${displayStressTestMonthlyCost}`,
+        yearlyData: yearlyData,
     }));
     }
   
@@ -145,8 +147,22 @@ function App() {
           <p>{formData.stressTestMonthlyCost}</p>
         </form>
         </div>
-    </>
 
+        <table>
+          <tbody>
+            <tr>
+              <th>Year</th>
+              <th>Balance Remaining</th>
+            </tr>
+            {formData.yearlyData.map((item) => (
+              <tr key={item.year}>
+                <td>{new Intl.NumberFormat().format(item.year)}</td>
+                <td>{new Intl.NumberFormat().format(item.balance)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+    </>
   )
 }
 
