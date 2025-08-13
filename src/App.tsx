@@ -157,7 +157,10 @@ function App() {
             {formData.yearlyData.map((item) => (
               <tr key={item.year}>
                 <td>{new Intl.NumberFormat().format(item.year)}</td>
-                <td>{new Intl.NumberFormat().format(item.balance)}</td>
+                <td>{new Intl.NumberFormat('en-GB', { 
+                  style: 'currency', 
+                  currency: 'GBP' 
+                  }).format(item.balance)}</td>
               </tr>
             ))}
           </tbody>
