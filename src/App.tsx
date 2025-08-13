@@ -52,6 +52,8 @@ function App() {
     const yearlyData = [];
     let currentBalance = borrowingAmount;
 
+    yearlyData.push({ year: 0, balance: currentBalance });
+
     for (let month = 1; month <= numberOfPaymentMonths; month++) {
       const monthlyInterest = currentBalance * monthlyInterestRate;
       const monthlyPrincipal = monthlyCost - monthlyInterest;
@@ -148,23 +150,25 @@ function App() {
         </form>
         </div>
 
-        <table>
-          <tbody>
-            <tr>
-              <th>Year</th>
-              <th>Balance Remaining</th>
-            </tr>
-            {formData.yearlyData.map((item) => (
-              <tr key={item.year}>
-                <td>{new Intl.NumberFormat().format(item.year)}</td>
-                <td>{new Intl.NumberFormat('en-GB', { 
-                  style: 'currency', 
-                  currency: 'GBP' 
-                  }).format(item.balance)}</td>
+        {formData.yearlyData.length > 0 && 
+          <table>
+            <tbody>
+              <tr>
+                <th>Year</th>
+                <th>Balance Remaining</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+              {formData.yearlyData.map((item) => (
+                <tr key={item.year}>
+                  <td>{new Intl.NumberFormat().format(item.year)}</td>
+                  <td>{new Intl.NumberFormat('en-GB', { 
+                    style: 'currency', 
+                    currency: 'GBP' 
+                    }).format(item.balance)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        }
     </>
   )
 }
