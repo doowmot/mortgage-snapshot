@@ -14,7 +14,7 @@ function App() {
     totalPayment: "",
     totalPaymentBreakdown: "",
     stressTestmonthlyPayment: "",
-    yearlyData: [],
+    amortisationSchedule: [],
   });
 
   const handleChange = (event) => {
@@ -82,21 +82,23 @@ function App() {
     const displaytotalCapital = formatCurrency(totalCapital);
     const displayStressTestmonthlyPayment = formatCurrency(stressTestmonthlyPayment);
 
-    const yearlyData = [];
+    const amortisationSchedule = [];
     let currentBalance = borrowingRequired;
-
-    yearlyData.push({ year: 0, balance: currentBalance });
+    amortisationSchedule.push({ year: 0, balance: currentBalance});
 
     for (let month = 1; month <= paymentMonths; month++) {
       const monthlyInterest = currentBalance * monthlyInterestRate;
       const monthlyPrincipal = monthlyPayment - monthlyInterest;
       currentBalance = currentBalance - monthlyPrincipal;
     
-      if (month % 12 === 0) {
-        const year = month / 12;
-        yearlyData.push({ year: year, balance: currentBalance });
+    if (month % 12 === 0) {
+      const year = month / 12;
+      if (month === paymentMonths) {
+        amortisationSchedule.push({ year: year, balance: 0});
+      } else {
+        amortisationSchedule.push({ year: year, balance: currentBalance});
       }
-    }
+    }}
 
     setFormData(prevState => ({
         ...prevState,
@@ -105,7 +107,7 @@ function App() {
         totalPayment: `You will pay: ${displaytotalPayment} over the ${formData.mortgageTerm} year mortgage term`,
         totalPaymentBreakdown: `This is made up of: ${displaytotalCapital} Capital and ${displaytotalInterest} Interest`,
         stressTestmonthlyPayment: `Disclaimer: If your interest rate goes up by 3%, your monthly payment will be: ${displayStressTestmonthlyPayment}`,
-        yearlyData: yearlyData,
+        amortisationSchedule: amortisationSchedule,
     }));
     }
   
@@ -183,14 +185,14 @@ function App() {
         </form>
         </div>
 
-        {formData.yearlyData.length > 0 && 
+        {formData.amortisationSchedule.length > 0 && 
           <table>
             <tbody>
               <tr>
                 <th>Year</th>
                 <th>Balance Remaining</th>
               </tr>
-              {formData.yearlyData.map((item) => (
+              {formData.amortisationSchedule.map((item) => (
                 <tr key={item.year}>
                   <td>{item.year}</td>
                   <td>{formatCurrency(item.balance)}</td>
