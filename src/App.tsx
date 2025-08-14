@@ -34,7 +34,7 @@ function App() {
     return (mortgageYears * 12);
   }
 
-  const calculateborrowingRequired = (housePrice, deposit) => {
+  const calculateBorrowingRequired = (housePrice, deposit) => {
     return (housePrice - deposit);
   }
 
@@ -54,13 +54,19 @@ function App() {
     return (parseFloat(annualRate) + 3);
   }
 
+  const formatCurrency = (amount) => new Intl.NumberFormat('en-GB', { 
+    style: 'currency', 
+    currency: 'GBP',
+    maximumFractionDigits: 0,
+  }).format(amount);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     
     const borrowingAvailable = calculateBorrowingAvailable(formData.annualIncome);
     const monthlyInterestRate = calculateMonthlyInterestRate(formData.annualInterestRate);
     const paymentMonths = calculatePaymentMonths(formData.mortgageTerm);
-    const borrowingRequired = calculateborrowingRequired(formData.propertyPrice, formData.depositAmount);
+    const borrowingRequired = calculateBorrowingRequired(formData.propertyPrice, formData.depositAmount);
     const monthlyPayment = calculateMonthlyPayment(borrowingRequired, monthlyInterestRate, paymentMonths);
     const totalPayment = calculateTotalPayment(monthlyPayment, paymentMonths);
     const totalInterest = calculateTotalInterest(totalPayment,borrowingRequired);
@@ -69,12 +75,12 @@ function App() {
     const stressTestMonthlyInterestRate = calculateMonthlyInterestRate(stressTestAnnualInterestRate);
     const stressTestmonthlyPayment = calculateMonthlyPayment(borrowingRequired, stressTestMonthlyInterestRate, paymentMonths);
 
-    const displayBorrowingAvailable = new Intl.NumberFormat().format(borrowingAvailable);
-    const displaymonthlyPayment = new Intl.NumberFormat().format(monthlyPayment);
-    const displaytotalPayment = new Intl.NumberFormat().format(totalPayment);
-    const displaytotalInterest = new Intl.NumberFormat().format(totalInterest);
-    const displaytotalCapital = new Intl.NumberFormat().format(totalCapital);
-    const displayStressTestmonthlyPayment = new Intl.NumberFormat().format(stressTestmonthlyPayment);
+    const displayBorrowingAvailable = formatCurrency(borrowingAvailable);
+    const displaymonthlyPayment = formatCurrency(monthlyPayment);
+    const displaytotalPayment = formatCurrency(totalPayment);
+    const displaytotalInterest = formatCurrency(totalInterest);
+    const displaytotalCapital = formatCurrency(totalCapital);
+    const displayStressTestmonthlyPayment = formatCurrency(stressTestmonthlyPayment);
 
     const yearlyData = [];
     let currentBalance = borrowingRequired;
@@ -94,11 +100,11 @@ function App() {
 
     setFormData(prevState => ({
         ...prevState,
-        borrowingAvailable: `You can likely borrow up to: £${displayBorrowingAvailable}`,
-        monthlyPayment: `Your monthly payment will be: £${displaymonthlyPayment}`,
-        totalPayment: `You will pay: £${displaytotalPayment} over the ${formData.mortgageTerm} year mortgage term`,
-        totalPaymentBreakdown: `This is made up of: £${displaytotalCapital} Capital and £${displaytotalInterest} Interest`,
-        stressTestmonthlyPayment: `Disclaimer: If your interest rate goes up by 3%, your monthly payment will be: £${displayStressTestmonthlyPayment}`,
+        borrowingAvailable: `You can likely borrow up to: ${displayBorrowingAvailable}`,
+        monthlyPayment: `Your monthly payment will be: ${displaymonthlyPayment}`,
+        totalPayment: `You will pay: ${displaytotalPayment} over the ${formData.mortgageTerm} year mortgage term`,
+        totalPaymentBreakdown: `This is made up of: ${displaytotalCapital} Capital and ${displaytotalInterest} Interest`,
+        stressTestmonthlyPayment: `Disclaimer: If your interest rate goes up by 3%, your monthly payment will be: ${displayStressTestmonthlyPayment}`,
         yearlyData: yearlyData,
     }));
     }
@@ -186,11 +192,8 @@ function App() {
               </tr>
               {formData.yearlyData.map((item) => (
                 <tr key={item.year}>
-                  <td>{new Intl.NumberFormat().format(item.year)}</td>
-                  <td>{new Intl.NumberFormat('en-GB', { 
-                    style: 'currency', 
-                    currency: 'GBP' 
-                    }).format(item.balance)}</td>
+                  <td>{item.year}</td>
+                  <td>{formatCurrency(item.balance)}</td>
                 </tr>
               ))}
             </tbody>
