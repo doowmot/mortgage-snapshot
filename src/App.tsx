@@ -60,6 +60,27 @@ function App() {
     maximumFractionDigits: 0,
   }).format(amount);
 
+  const calculateAmortisationSchedule = (loanAmount, paymentMonths, monthlyRate, monthlyPayment) => {
+    const amortisationSchedule = [];
+    let currentBalance = loanAmount;
+    amortisationSchedule.push({ year: 0, balance: currentBalance});
+
+    for (let month = 1; month <= paymentMonths; month++) {
+      const monthlyInterest = currentBalance * monthlyRate;
+      const monthlyPrincipal = monthlyPayment - monthlyInterest;
+      currentBalance -= monthlyPrincipal;
+    
+    if (month % 12 === 0) {
+      const year = month / 12;
+      if (month === paymentMonths) {
+        amortisationSchedule.push({ year: year, balance: 0});
+      } else {
+        amortisationSchedule.push({ year: year, balance: currentBalance});
+      }
+    }}
+    return amortisationSchedule;
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
     
@@ -82,23 +103,7 @@ function App() {
     const displaytotalCapital = formatCurrency(totalCapital);
     const displayStressTestmonthlyPayment = formatCurrency(stressTestmonthlyPayment);
 
-    const amortisationSchedule = [];
-    let currentBalance = borrowingRequired;
-    amortisationSchedule.push({ year: 0, balance: currentBalance});
-
-    for (let month = 1; month <= paymentMonths; month++) {
-      const monthlyInterest = currentBalance * monthlyInterestRate;
-      const monthlyPrincipal = monthlyPayment - monthlyInterest;
-      currentBalance = currentBalance - monthlyPrincipal;
-    
-    if (month % 12 === 0) {
-      const year = month / 12;
-      if (month === paymentMonths) {
-        amortisationSchedule.push({ year: year, balance: 0});
-      } else {
-        amortisationSchedule.push({ year: year, balance: currentBalance});
-      }
-    }}
+    const amortisationSchedule = calculateAmortisationSchedule(borrowingRequired, paymentMonths, monthlyInterestRate, monthlyPayment);
 
     setFormData(prevState => ({
         ...prevState,
