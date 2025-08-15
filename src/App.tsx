@@ -1,5 +1,5 @@
 import './App.css'
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 function App() {
   const [formData, setFormData] = useState({
@@ -16,6 +16,8 @@ function App() {
     stressTestmonthlyPayment: "",
     amortisationSchedule: [],
   });
+
+  const chartRef = useRef(null);
 
   const calculateBorrowingAvailable = (income) => {
     return income * 4;
@@ -123,13 +125,26 @@ function App() {
         stressTestmonthlyPayment: `Disclaimer: If your interest rate goes up by 3%, your monthly payment will be: ${displayStressTestmonthlyPayment}`,
         amortisationSchedule: amortisationSchedule,
     }));
+
+    const ctx = chartRef.current.getContext('2d');
+    const myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: amortisationSchedule.map((item) => item.year),
+        datasets: [{
+          label: 'Balance',
+          data: amortisationSchedule.map((item) => item.balance),
+        }]
+      }
+    });
   }
   
   return (
     <>
-      <h1> Mortgage Calculator </h1>
+      <h1>Mortgage Calculator</h1>
+
       <div>
-        <h2> How much can i borrow?</h2>
+        <h2>How much can i borrow?</h2>
         <form onSubmit={handleAffordabilitySubmit}>
           <label>
             Deposit Amount:
@@ -153,7 +168,7 @@ function App() {
       </div>
 
       <div>
-        <h2> How much will it cost me?</h2>
+        <h2>How much will it cost me?</h2>
           <form onSubmit={handleCostsSubmit}>
           <label>
             Deposit Amount:
@@ -199,22 +214,28 @@ function App() {
         </form>
         </div>
 
-        {formData.amortisationSchedule.length > 0 && 
-          <table>
-            <tbody>
-              <tr>
-                <th>Year</th>
-                <th>Balance Remaining</th>
-              </tr>
-              {formData.amortisationSchedule.map((item) => (
-                <tr key={item.year}>
-                  <td>{item.year}</td>
-                  <td>{formatCurrency(item.balance)}</td>
+        <div>
+          <h2>Mortgage Balance Over Time</h2>
+          {formData.amortisationSchedule.length > 0 && 
+            <table>
+              <tbody>
+                <tr>
+                  <th>Year</th>
+                  <th>Balance Remaining</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        }
+                {formData.amortisationSchedule.map((item) => (
+                  <tr key={item.year}>
+                    <td>{item.year}</td>
+                    <td>{formatCurrency(item.balance)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          }
+        
+          <canvas ref={chartRef} width="400" height="200"></canvas>
+        </div>
+    
     </>
   )
 }
