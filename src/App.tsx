@@ -17,11 +17,6 @@ function App() {
     amortisationSchedule: [],
   });
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevState) => ({ ...prevState, [name]: value }));
-  }
-
   const calculateBorrowingAvailable = (income) => {
     return income * 4;
   }
@@ -81,10 +76,26 @@ function App() {
     return amortisationSchedule;
   }
 
-  const handleSubmit = (event) => {
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevState) => ({ ...prevState, [name]: value }));
+  }
+
+  const handleAffordabilitySubmit = (event) => {
+    event.preventDefault();
+
+    const borrowingAvailable = calculateBorrowingAvailable(formData.annualIncome);
+    const displayBorrowingAvailable = formatCurrency(borrowingAvailable);
+
+    setFormData(prevState => ({
+      ...prevState,
+      borrowingAvailable: `You can likely borrow up to: ${displayBorrowingAvailable}`,
+    }));
+  }
+
+  const handleCostsSubmit = (event) => {
     event.preventDefault();
     
-    const borrowingAvailable = calculateBorrowingAvailable(formData.annualIncome);
     const monthlyInterestRate = calculateMonthlyInterestRate(formData.annualInterestRate);
     const paymentMonths = calculatePaymentMonths(formData.mortgageTerm);
     const borrowingRequired = calculateBorrowingRequired(formData.propertyPrice, formData.depositAmount);
@@ -95,8 +106,7 @@ function App() {
     const stressTestAnnualInterestRate = calculateStressTestAnnualInterestRate(formData.annualInterestRate);
     const stressTestMonthlyInterestRate = calculateMonthlyInterestRate(stressTestAnnualInterestRate);
     const stressTestmonthlyPayment = calculateMonthlyPayment(borrowingRequired, stressTestMonthlyInterestRate, paymentMonths);
-
-    const displayBorrowingAvailable = formatCurrency(borrowingAvailable);
+    
     const displaymonthlyPayment = formatCurrency(monthlyPayment);
     const displaytotalPayment = formatCurrency(totalPayment);
     const displaytotalInterest = formatCurrency(totalInterest);
@@ -104,24 +114,23 @@ function App() {
     const displayStressTestmonthlyPayment = formatCurrency(stressTestmonthlyPayment);
 
     const amortisationSchedule = calculateAmortisationSchedule(borrowingRequired, paymentMonths, monthlyInterestRate, monthlyPayment);
-
+  
     setFormData(prevState => ({
         ...prevState,
-        borrowingAvailable: `You can likely borrow up to: ${displayBorrowingAvailable}`,
         monthlyPayment: `Your monthly payment will be: ${displaymonthlyPayment}`,
         totalPayment: `You will pay: ${displaytotalPayment} over the ${formData.mortgageTerm} year mortgage term`,
         totalPaymentBreakdown: `This is made up of: ${displaytotalCapital} Capital and ${displaytotalInterest} Interest`,
         stressTestmonthlyPayment: `Disclaimer: If your interest rate goes up by 3%, your monthly payment will be: ${displayStressTestmonthlyPayment}`,
         amortisationSchedule: amortisationSchedule,
     }));
-    }
+  }
   
   return (
     <>
       <h1> Mortgage Calculator </h1>
       <div>
         <h2> How much can i borrow?</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleAffordabilitySubmit}>
           <label>
             Deposit Amount:
             <input 
@@ -145,7 +154,7 @@ function App() {
 
       <div>
         <h2> How much will it cost me?</h2>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleCostsSubmit}>
           <label>
             Deposit Amount:
             <input 
