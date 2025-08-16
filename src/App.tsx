@@ -233,6 +233,7 @@ function App() {
       {formData.amortisationSchedule.length > 0 && 
       <div>
         <h2>Mortgage Balance Over Time</h2>
+        <canvas ref={chartRef} width="400" height="200"></canvas>
           <table>
             <tbody>
               <tr>
@@ -247,7 +248,6 @@ function App() {
               ))}
             </tbody>
           </table>
-        <canvas ref={chartRef} width="400" height="200"></canvas>
       </div>
       }
     </>
