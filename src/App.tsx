@@ -1,5 +1,5 @@
 import './App.css'
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 function App() {
   const [formData, setFormData] = useState({
@@ -16,6 +16,8 @@ function App() {
     stressTestmonthlyPayment: "",
     amortisationSchedule: [],
   });
+
+  const [showCostsForm, setShowCostsForm] = useState(false);
 
   const chartRef = useRef(null);
 
@@ -93,6 +95,8 @@ function App() {
       ...prevState,
       borrowingAvailable: `You can likely borrow up to: ${displayBorrowingAvailable}`,
     }));
+
+    setShowCostsForm(true);
   }
 
   const handleCostsSubmit = (event) => {
@@ -125,20 +129,30 @@ function App() {
         stressTestmonthlyPayment: `Disclaimer: If your interest rate goes up by 3%, your monthly payment will be: ${displayStressTestmonthlyPayment}`,
         amortisationSchedule: amortisationSchedule,
     }));
-
-    const ctx = chartRef.current.getContext('2d');
-    const myChart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: amortisationSchedule.map((item) => item.year),
-        datasets: [{
-          label: 'Balance',
-          data: amortisationSchedule.map((item) => item.balance),
-        }]
-      }
-    });
   }
-  
+
+    useEffect(() => {
+      if (formData.amortisationSchedule.length > 0 && chartRef.current) {
+        if (chartRef.current.chart) {
+          chartRef.current.chart.destroy();
+        }
+        
+        const ctx = chartRef.current.getContext('2d');
+        const newChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: formData.amortisationSchedule.map((item) => item.year),
+            datasets: [{
+              label: 'Balance',
+              data: formData.amortisationSchedule.map((item) => item.balance),
+            }]
+          }
+        });
+        
+        chartRef.current.chart = newChart;
+      }
+    }, [formData.amortisationSchedule]);
+    
   return (
     <>
       <h1>Mortgage Calculator</h1>
@@ -167,6 +181,7 @@ function App() {
         </form>
       </div>
 
+      {showCostsForm &&
       <div>
         <h2>How much will it cost me?</h2>
           <form onSubmit={handleCostsSubmit}>
@@ -212,30 +227,29 @@ function App() {
           <p>{formData.totalPaymentBreakdown}</p>
           <p>{formData.stressTestmonthlyPayment}</p>
         </form>
-        </div>
+      </div>
+      }
 
-        <div>
-          <h2>Mortgage Balance Over Time</h2>
-          {formData.amortisationSchedule.length > 0 && 
-            <table>
-              <tbody>
-                <tr>
-                  <th>Year</th>
-                  <th>Balance Remaining</th>
+      {formData.amortisationSchedule.length > 0 && 
+      <div>
+        <h2>Mortgage Balance Over Time</h2>
+          <table>
+            <tbody>
+              <tr>
+                <th>Year</th>
+                <th>Balance Remaining</th>
+              </tr>
+              {formData.amortisationSchedule.map((item) => (
+                <tr key={item.year}>
+                  <td>{item.year}</td>
+                  <td>{formatCurrency(item.balance)}</td>
                 </tr>
-                {formData.amortisationSchedule.map((item) => (
-                  <tr key={item.year}>
-                    <td>{item.year}</td>
-                    <td>{formatCurrency(item.balance)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          }
-        
-          <canvas ref={chartRef} width="400" height="200"></canvas>
-        </div>
-    
+              ))}
+            </tbody>
+          </table>
+        <canvas ref={chartRef} width="400" height="200"></canvas>
+      </div>
+      }
     </>
   )
 }
