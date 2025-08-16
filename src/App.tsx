@@ -143,9 +143,25 @@ function App() {
           data: {
             labels: formData.amortisationSchedule.map((item) => item.year),
             datasets: [{
-              label: 'Balance',
+              label: 'Balance Remaining',
               data: formData.amortisationSchedule.map((item) => item.balance),
             }]
+          },
+          options: {
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: "Year"
+                }
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: "£"
+                }
+              },
+            }
           }
         });
         
