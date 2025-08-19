@@ -157,10 +157,12 @@ function App() {
           type: 'line',
           data: {
             labels: formData.amortisationSchedule.map((item) => item.year),
-            datasets: [{
+            datasets: [
+              {
               label: 'Balance Remaining',
               data: formData.amortisationSchedule.map((item) => item.balance),
-            }]
+              },
+            ],
           },
           options: {
             scales: {
@@ -260,7 +262,6 @@ function App() {
         </form>
       </div>
       }
-
       {formData.amortisationSchedule.length > 0 && 
       <div>
         <h2>Mortgage Balance Over Time</h2>
@@ -269,11 +270,15 @@ function App() {
             <tbody>
               <tr>
                 <th>Year</th>
+                <th>Interest</th>
+                <th>Capital</th>
                 <th>Balance Remaining</th>
               </tr>
               {formData.amortisationSchedule.map((item) => (
                 <tr key={item.year}>
                   <td>{item.year}</td>
+                  <td>{formatCurrency(item.interest)}</td>
+                  <td>{formatCurrency(item.capital)}</td>
                   <td>{formatCurrency(item.balance)}</td>
                 </tr>
               ))}
