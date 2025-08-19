@@ -1,5 +1,6 @@
 import './App.css'
 import { useState, useRef, useEffect } from "react";
+declare const Chart: any;
 
 function App() {
   const [formData, setFormData] = useState({
