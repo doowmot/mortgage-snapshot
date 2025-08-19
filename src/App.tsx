@@ -62,21 +62,36 @@ function App() {
   const calculateAmortisationSchedule = (loanAmount, paymentMonths, monthlyRate, monthlyPayment) => {
     const amortisationSchedule = [];
     let currentBalance = loanAmount;
-    amortisationSchedule.push({ year: 0, balance: currentBalance});
+    let annualInterestPaid = 0;
+    let annualCapitalPaid = 0;
+    amortisationSchedule.push({year: 0, interest: 0, capital: 0, balance: currentBalance});
 
     for (let month = 1; month <= paymentMonths; month++) {
       const monthlyInterest = currentBalance * monthlyRate;
-      const monthlyPrincipal = monthlyPayment - monthlyInterest;
-      currentBalance -= monthlyPrincipal;
-    
-    if (month % 12 === 0) {
-      const year = month / 12;
+      let monthlyCapital;
+      
       if (month === paymentMonths) {
-        amortisationSchedule.push({ year: year, balance: 0});
+        monthlyCapital = currentBalance;
       } else {
-        amortisationSchedule.push({ year: year, balance: currentBalance});
+        monthlyCapital = monthlyPayment - monthlyInterest;
       }
-    }}
+      
+      currentBalance -= monthlyCapital;
+      annualInterestPaid += monthlyInterest;
+      annualCapitalPaid += monthlyCapital;
+
+      if (month % 12 === 0) {
+        const year = month / 12;
+        amortisationSchedule.push({
+          year: year, 
+          interest: annualInterestPaid, 
+          capital: annualCapitalPaid, 
+          balance: Math.max(0, currentBalance) // Ensure balance never goes negative
+        });
+        annualInterestPaid = 0;
+        annualCapitalPaid = 0;
+      }
+    }
     return amortisationSchedule;
   }
 
