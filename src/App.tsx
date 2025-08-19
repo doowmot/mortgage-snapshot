@@ -20,6 +20,7 @@ function App() {
   const [showCostsForm, setShowCostsForm] = useState(false);
 
   const chartRef = useRef(null);
+  const barChartRef = useRef(null);
 
   const calculateBorrowingAvailable = (income) => {
     return income * 4;
@@ -86,7 +87,7 @@ function App() {
           year: year, 
           interest: annualInterestPaid, 
           capital: annualCapitalPaid, 
-          balance: Math.max(0, currentBalance) // Ensure balance never goes negative
+          balance: Math.max(0, currentBalance)
         });
         annualInterestPaid = 0;
         annualCapitalPaid = 0;
@@ -146,45 +147,98 @@ function App() {
     }));
   }
 
-    useEffect(() => {
-      if (formData.amortisationSchedule.length > 0 && chartRef.current) {
-        if (chartRef.current.chart) {
-          chartRef.current.chart.destroy();
+  useEffect(() => {
+    if (formData.amortisationSchedule.length > 0 && chartRef.current) {
+      if (chartRef.current.chart) {
+        chartRef.current.chart.destroy();
+      }
+      
+      const ctx = chartRef.current.getContext('2d');
+      const newChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: formData.amortisationSchedule.map((item) => item.year),
+          datasets: [
+            {
+            label: 'Balance Remaining',
+            data: formData.amortisationSchedule.map((item) => item.balance),
+            },
+          ],
+        },
+        options: {
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: "Year"
+              }
+            },
+            y: {
+              title: {
+                display: true,
+                text: "£"
+              }
+            },
+          }
         }
-        
-        const ctx = chartRef.current.getContext('2d');
-        const newChart = new Chart(ctx, {
-          type: 'line',
-          data: {
-            labels: formData.amortisationSchedule.map((item) => item.year),
-            datasets: [
-              {
-              label: 'Balance Remaining',
-              data: formData.amortisationSchedule.map((item) => item.balance),
-              },
-            ],
-          },
-          options: {
-            scales: {
-              x: {
-                title: {
-                  display: true,
-                  text: "Year"
-                }
-              },
-              y: {
-                title: {
-                  display: true,
-                  text: "£"
-                }
-              },
+      });
+      
+      chartRef.current.chart = newChart;
+    }
+  }, [formData.amortisationSchedule]);
+
+  useEffect(() => {
+    if (formData.amortisationSchedule.length > 0 && barChartRef.current) {
+      if (barChartRef.current.chart) {
+        barChartRef.current.chart.destroy();
+      }
+      
+      const barCtx = barChartRef.current.getContext('2d');
+      const barChart = new Chart(barCtx, {
+        type: 'bar',
+        data: {
+          labels: formData.amortisationSchedule.map((item) => item.year),
+          datasets: [
+            {
+              label: 'Interest',
+              data: formData.amortisationSchedule.map((item) => item.interest),
+              backgroundColor: 'rgba(255, 99, 132, 0.8)',
+              borderColor: 'rgba(255, 99, 132, 1)',
+              borderWidth: 1
+            },
+            {
+              label: 'Capital',
+              data: formData.amortisationSchedule.map((item) => item.capital),
+              backgroundColor: 'rgba(54, 162, 235, 0.8)',
+              borderColor: 'rgba(54, 162, 235, 1)',
+              borderWidth: 1
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: {
+              stacked: true,
+              title: {
+                display: true,
+                text: 'Year'
+              }
+            },
+            y: {
+              stacked: true,
+              title: {
+                display: true,
+                text: '£'
+              }
             }
           }
-        });
-        
-        chartRef.current.chart = newChart;
-      }
-    }, [formData.amortisationSchedule]);
+        }
+      });
+      
+      barChartRef.current.chart = barChart;
+    }
+  }, [formData.amortisationSchedule]);
     
   return (
     <>
@@ -262,28 +316,33 @@ function App() {
         </form>
       </div>
       }
+
       {formData.amortisationSchedule.length > 0 && 
       <div>
         <h2>Mortgage Balance Over Time</h2>
         <canvas ref={chartRef} width="400" height="200"></canvas>
-          <table>
-            <tbody>
-              <tr>
-                <th>Year</th>
-                <th>Interest</th>
-                <th>Capital</th>
-                <th>Balance Remaining</th>
+        
+        <h2>Annual Interest vs Capital Payments</h2>
+        <canvas ref={barChartRef} width="400" height="200"></canvas>
+        
+        <table>
+          <tbody>
+            <tr>
+              <th>Year</th>
+              <th>Interest</th>
+              <th>Capital</th>
+              <th>Balance Remaining</th>
+            </tr>
+            {formData.amortisationSchedule.map((item) => (
+              <tr key={item.year}>
+                <td>{item.year}</td>
+                <td>{formatCurrency(item.interest)}</td>
+                <td>{formatCurrency(item.capital)}</td>
+                <td>{formatCurrency(item.balance)}</td>
               </tr>
-              {formData.amortisationSchedule.map((item) => (
-                <tr key={item.year}>
-                  <td>{item.year}</td>
-                  <td>{formatCurrency(item.interest)}</td>
-                  <td>{formatCurrency(item.capital)}</td>
-                  <td>{formatCurrency(item.balance)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+            ))}
+          </tbody>
+        </table>
       </div>
       }
     </>
