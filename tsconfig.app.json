@@ -17,6 +17,7 @@
 
     /* Linting */
     "strict": false,  // TODO: Re-enable strict mode after adding proper type annotations
+    "noImplicitAny": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
