@@ -243,10 +243,12 @@ function App() {
     
   return (
     <>
-      <h1>Mortgage Calculator</h1>
-
+      <div className="max-w-4xl mx-auto p-8">
+        <h1 className="text-3xl font-bold mb-8">Mortgage Calculator</h1>
+      </div>
+      
       <div>
-        <h2>How much can i borrow?</h2>
+      <h2 className="text-xl font-semibold mb-4">How much can I borrow?</h2>
         <form onSubmit={handleAffordabilitySubmit}>
           <label>
             Deposit Amount:
