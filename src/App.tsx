@@ -1,5 +1,16 @@
 import './App.css'
 import { useState, useRef, useEffect } from "react";
+import { 
+  calculateBorrowingAvailable,
+  calculateMonthlyPayment,
+  calculateMonthlyInterestRate,
+  calculatePaymentMonths,
+  calculateBorrowingRequired,
+  calculateTotalPayment,
+  calculateTotalInterest,
+  calculateStressTestAnnualInterestRate,
+  calculateAmortisationSchedule
+} from './utils/mortgageCalculations';
 declare const Chart: any;
 
 function App() {
@@ -18,84 +29,16 @@ function App() {
     amortisationSchedule: [],
   });
 
-  const [showCostsForm, setShowCostsForm] = useState(false);
-
-  const chartRef = useRef(null);
-  const barChartRef = useRef(null);
-
-  const calculateBorrowingAvailable = (income) => {
-    return income * 4;
-  }
-
-  const calculateMonthlyInterestRate = (annualRate) => {
-    return (annualRate / 100) / 12;
-  }
-
-  const calculatePaymentMonths = (mortgageYears) => {
-    return (mortgageYears * 12);
-  }
-
-  const calculateBorrowingRequired = (housePrice, deposit) => {
-    return (housePrice - deposit);
-  }
-
-  const calculateMonthlyPayment = (loanAmount, monthlyRate, paymentMonths) => {
-    return (Math.round(loanAmount * monthlyRate * (Math.pow(1+monthlyRate, paymentMonths)) / (Math.pow(1+monthlyRate, paymentMonths) -1)));
-  }
-
-  const calculateTotalPayment = (monthlyPayment, paymentMonths) => {
-    return (monthlyPayment * paymentMonths);
-  }
-
-  const calculateTotalInterest = (totalPayment, loanAmount) => {
-    return (totalPayment - loanAmount);
-  }
-
-  const calculateStressTestAnnualInterestRate = (annualRate) => {
-    return (parseFloat(annualRate) + 3);
-  }
-
-  const formatCurrency = (amount) => new Intl.NumberFormat('en-GB', { 
+const formatCurrency = (amount) => new Intl.NumberFormat('en-GB', { 
     style: 'currency', 
     currency: 'GBP',
     maximumFractionDigits: 0,
   }).format(amount);
 
-  const calculateAmortisationSchedule = (loanAmount, paymentMonths, monthlyRate, monthlyPayment) => {
-    const amortisationSchedule = [];
-    let currentBalance = loanAmount;
-    let annualInterestPaid = 0;
-    let annualCapitalPaid = 0;
-    amortisationSchedule.push({year: 0, interest: 0, capital: 0, balance: currentBalance});
+  const [showCostsForm, setShowCostsForm] = useState(false);
 
-    for (let month = 1; month <= paymentMonths; month++) {
-      const monthlyInterest = currentBalance * monthlyRate;
-      let monthlyCapital;
-      
-      if (month === paymentMonths) {
-        monthlyCapital = currentBalance;
-      } else {
-        monthlyCapital = monthlyPayment - monthlyInterest;
-      }
-      
-      currentBalance -= monthlyCapital;
-      annualInterestPaid += monthlyInterest;
-      annualCapitalPaid += monthlyCapital;
-
-      if (month % 12 === 0) {
-        const year = month / 12;
-        amortisationSchedule.push({
-          year: year, 
-          interest: annualInterestPaid, 
-          capital: annualCapitalPaid, 
-          balance: Math.max(0, currentBalance)
-        });
-        annualInterestPaid = 0;
-        annualCapitalPaid = 0;
-      }
-    }
-    return amortisationSchedule;
-  }
+  const chartRef = useRef(null);
+  const barChartRef = useRef(null);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
