@@ -11,6 +11,7 @@ import {
   calculateStressTestAnnualInterestRate,
   calculateAmortisationSchedule
 } from './utils/mortgageCalculations';
+import { formatCurrency } from "./utils/format";
 declare const Chart: any;
 
 function App() {
@@ -28,12 +29,6 @@ function App() {
     stressTestmonthlyPayment: "",
     amortisationSchedule: [],
   });
-
-const formatCurrency = (amount) => new Intl.NumberFormat('en-GB', { 
-    style: 'currency', 
-    currency: 'GBP',
-    maximumFractionDigits: 0,
-  }).format(amount);
 
   const [showCostsForm, setShowCostsForm] = useState(false);
 
