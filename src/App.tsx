@@ -271,55 +271,55 @@ function App() {
             value="calculate"
             className="bg-blue-500 text-white px-4 py-2 rounded block mx-auto hover:bg-blue-400 cursor-pointer border-2 border-black"
           />
-          <p>{formData.borrowingAvailable}</p>
+          <p className="text-2xl p-10 font-extrabold">{formData.borrowingAvailable}</p>
         </form>
       </div>
 
       {showCostsForm &&
-      <div>
-        <h2>How much will it cost me?</h2>
+      <div className="p-8">
+        <h2 className="text-3xl font-semibold p-2">How much will it cost me?</h2>
           <form onSubmit={handleCostsSubmit}>
-          <label>
-            Deposit Amount:
-            <input 
-              type="number" 
-              name="depositAmount"
-              value={formData.depositAmount} 
-              onChange={handleChange}
+          <label className="block font-medium m-2">How much is your deposit?</label>
+          <input 
+            type="number" 
+            name="depositAmount"
+            value={formData.depositAmount} 
+            onChange={handleChange}
+            className="border-2 border-black rounded p-2 mb-4"
+          />
+          <label className="block font-medium m-2">What is the property price?</label>
+          <input 
+            type="number" 
+            name="propertyPrice"
+            value={formData.propertyPrice} 
+            onChange={handleChange}
+            className="border-2 border-black rounded p-2 mb-4"
+          />
+          <label className="block font-medium m-2">What is the interest rate?</label>
+          <input 
+            type="float" 
+            name="annualInterestRate"
+            value={formData.annualInterestRate} 
+            onChange={handleChange}
+            className="border-2 border-black rounded p-2 mb-4"
             />
-          </label>
-          <label>
-            Property Price:
-            <input 
-              type="number" 
-              name="propertyPrice"
-              value={formData.propertyPrice} 
-              onChange={handleChange}
-              />
-          </label>
-          <label>
-            Interest Rate:
-            <input 
-              type="float" 
-              name="annualInterestRate"
-              value={formData.annualInterestRate} 
-              onChange={handleChange}
-              />
-          </label>
-          <label>
-            Mortgage Term:
-            <input 
-              type="number" 
-              name="mortgageTerm"
-              value={formData.mortgageTerm} 
-              onChange={handleChange}
-            />
-          </label>
-          <input type="submit" value="calculate" />
-          <p>{formData.monthlyPayment}</p>
-          <p>{formData.totalPayment}</p>
-          <p>{formData.totalPaymentBreakdown}</p>
-          <p>{formData.stressTestmonthlyPayment}</p>
+          <label className="block font-medium m-2">What is the mortgage term?</label>
+          <input 
+            type="number" 
+            name="mortgageTerm"
+            value={formData.mortgageTerm} 
+            onChange={handleChange}
+            className="border-2 border-black rounded p-2 mb-4"
+          />
+          <input 
+            type="submit" 
+            value="calculate"
+            className="bg-blue-500 text-white px-4 py-2 rounded block mx-auto hover:bg-blue-400 cursor-pointer border-2 border-black" 
+          />
+          <p className="text-2xl p-10 font-extrabold">{formData.monthlyPayment}</p>
+          <p className="text-1xl p-10 font-extrabold">{formData.totalPayment}</p>
+          <p className="text-1xl p-10 font-extrabold">{formData.totalPaymentBreakdown}</p>
+          <p className="text-1xl p-10 font-extrabold">{formData.stressTestmonthlyPayment}</p>
         </form>
       </div>
       }
