@@ -43,7 +43,7 @@ export function CostsForm(props) {
           <p className="text-2xl p-10 font-extrabold">{props.monthlyPayment}</p>
           <p className="text-1xl p-10 font-extrabold">{props.totalPayment}</p>
           <p className="text-1xl p-10 font-extrabold">{props.totalPaymentBreakdown}</p>
-          <p className="text-1xl p-10 font-extrabold">{props.stressTestmonthlyPayment}</p>
+          <p className="text-1xl p-10 font-extrabold">{props.stressTestMonthlyPayment}</p>
         </form>
       </div>
     );

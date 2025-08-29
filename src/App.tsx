@@ -28,7 +28,7 @@ function App() {
     monthlyPayment: "",
     totalPayment: "",
     totalPaymentBreakdown: "",
-    stressTestmonthlyPayment: "",
+    stressTestMonthlyPayment: "",
     amortisationSchedule: [],
   });
 
@@ -68,22 +68,22 @@ function App() {
     const totalCapital = borrowingRequired;
     const stressTestAnnualInterestRate = calculateStressTestAnnualInterestRate(formData.annualInterestRate);
     const stressTestMonthlyInterestRate = calculateMonthlyInterestRate(stressTestAnnualInterestRate);
-    const stressTestmonthlyPayment = calculateMonthlyPayment(borrowingRequired, stressTestMonthlyInterestRate, paymentMonths);
+    const stressTestMonthlyPayment = calculateMonthlyPayment(borrowingRequired, stressTestMonthlyInterestRate, paymentMonths);
     
-    const displaymonthlyPayment = formatCurrency(monthlyPayment);
-    const displaytotalPayment = formatCurrency(totalPayment);
-    const displaytotalInterest = formatCurrency(totalInterest);
-    const displaytotalCapital = formatCurrency(totalCapital);
-    const displayStressTestmonthlyPayment = formatCurrency(stressTestmonthlyPayment);
+    const displayMonthlyPayment = formatCurrency(monthlyPayment);
+    const displayTotalPayment = formatCurrency(totalPayment);
+    const displayTotalInterest = formatCurrency(totalInterest);
+    const displayTotalCapital = formatCurrency(totalCapital);
+    const displayStressTestMonthlyPayment = formatCurrency(stressTestMonthlyPayment);
 
     const amortisationSchedule = calculateAmortisationSchedule(borrowingRequired, paymentMonths, monthlyInterestRate, monthlyPayment);
   
     setFormData(prevState => ({
         ...prevState,
-        monthlyPayment: `Your monthly payment will be: ${displaymonthlyPayment}`,
-        totalPayment: `You will pay: ${displaytotalPayment} over the ${formData.mortgageTerm} year mortgage term`,
-        totalPaymentBreakdown: `This is made up of: ${displaytotalCapital} Capital and ${displaytotalInterest} Interest`,
-        stressTestmonthlyPayment: `Disclaimer: If your interest rate goes up by 3%, your monthly payment will be: ${displayStressTestmonthlyPayment}`,
+        monthlyPayment: `Your monthly payment will be: ${displayMonthlyPayment}`,
+        totalPayment: `You will pay: ${displayTotalPayment} over the ${formData.mortgageTerm} year mortgage term`,
+        totalPaymentBreakdown: `This is made up of: ${displayTotalCapital} Capital and ${displayTotalInterest} Interest`,
+        stressTestMonthlyPayment: `Disclaimer: If your interest rate goes up by 3%, your monthly payment will be: ${displayStressTestMonthlyPayment}`,
         amortisationSchedule: amortisationSchedule,
     }));
   }
@@ -206,7 +206,7 @@ function App() {
           monthlyPayment={formData.monthlyPayment}
           totalPayment={formData.totalPayment}
           totalPaymentBreakdown={formData.totalPaymentBreakdown}
-          stressTestmonthlyPayment={formData.stressTestmonthlyPayment}
+          stressTestMonthlyPayment={formData.stressTestMonthlyPayment}
         />
       }
 
