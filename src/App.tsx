@@ -14,6 +14,7 @@ import {
 import { formatCurrency } from "./utils/format";
 import { AffordabilityForm } from "./components/AffordabilityForm";
 import { CostsForm } from "./components/CostsForm";
+import { MortgageTable } from "./components/MortgageTable";
 declare const Chart: any;
 
 function App() {
@@ -217,25 +218,10 @@ function App() {
         
         <h2>Annual Interest vs Capital Payments</h2>
         <canvas ref={barChartRef} width="400" height="200"></canvas>
-        
-        <table>
-          <tbody>
-            <tr>
-              <th>Year</th>
-              <th>Interest</th>
-              <th>Capital</th>
-              <th>Balance Remaining</th>
-            </tr>
-            {formData.amortisationSchedule.map((item) => (
-              <tr key={item.year}>
-                <td>{item.year}</td>
-                <td>{formatCurrency(item.interest)}</td>
-                <td>{formatCurrency(item.capital)}</td>
-                <td>{formatCurrency(item.balance)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+
+        <MortgageTable
+        amortisationSchedule={formData.amortisationSchedule}
+        />
       </div>
       }
     </>
