@@ -15,6 +15,7 @@ import { formatCurrency } from "./utils/format";
 import { AffordabilityForm } from "./components/AffordabilityForm";
 import { CostsForm } from "./components/CostsForm";
 import { MortgageTable } from "./components/MortgageTable";
+import { validateDeposit, validateIncome } from './utils/validation';
 declare const Chart: any;
 
 function App() {
@@ -42,24 +43,26 @@ function App() {
     const { name, value } = event.target;
     setFormData((prevState) => ({ ...prevState, [name]: value }));
   }
-
+  
   const handleAffordabilitySubmit = (event) => {
     event.preventDefault();
   
-    if (isNaN(formData.depositAmount) || formData.depositAmount <= 0) {
+    const depositError = validateDeposit(formData.depositAmount);
+    if (depositError) {
       setFormData(prevState => ({
         ...prevState,
-        borrowingAvailable: "Error: Please enter a valid deposit amount",
+        borrowingAvailable: depositError,
       }));
-      return; 
+      return;
     }
-
-    if (isNaN(formData.annualIncome) || formData.annualIncome <= 0) {
+  
+    const incomeError = validateIncome(formData.annualIncome);
+    if (incomeError) {
       setFormData(prevState => ({
         ...prevState,
-        borrowingAvailable: "Error: Please enter a valid annual income amount",
+        borrowingAvailable: incomeError,
       }));
-      return; 
+      return;
     }
   
     const borrowingAvailable = calculateBorrowingAvailable(formData.annualIncome);
