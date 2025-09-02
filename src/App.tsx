@@ -45,15 +45,31 @@ function App() {
 
   const handleAffordabilitySubmit = (event) => {
     event.preventDefault();
+  
+    if (isNaN(formData.depositAmount) || formData.depositAmount <= 0) {
+      setFormData(prevState => ({
+        ...prevState,
+        borrowingAvailable: "Error: Please enter a valid deposit amount",
+      }));
+      return; 
+    }
 
+    if (isNaN(formData.annualIncome) || formData.annualIncome <= 0) {
+      setFormData(prevState => ({
+        ...prevState,
+        borrowingAvailable: "Error: Please enter a valid annual income amount",
+      }));
+      return; 
+    }
+  
     const borrowingAvailable = calculateBorrowingAvailable(formData.annualIncome);
     const displayBorrowingAvailable = formatCurrency(borrowingAvailable);
-
+  
     setFormData(prevState => ({
       ...prevState,
       borrowingAvailable: `You can likely borrow up to: ${displayBorrowingAvailable}`,
     }));
-
+  
     setShowCostsForm(true);
   }
 
@@ -189,7 +205,7 @@ function App() {
       </div>
 
       <AffordabilityForm 
-        handleAffordabilitySubmit={handleAffordabilitySubmit}
+        handleAffordabilitySubmit={handleAffordabilitySubmit} 
         handleChange={handleChange}
         depositAmount={formData.depositAmount}
         annualIncome={formData.annualIncome}

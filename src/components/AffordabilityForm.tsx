@@ -2,7 +2,7 @@ export function AffordabilityForm(props) {
     return (
       <div className="p-8">
         <h2 className="text-3xl font-semibold p-2">How much can I borrow?</h2>
-      <form onSubmit={props.handleAffordabilitySubmit}>
+      <form onSubmit={props.handleAffordabilitySubmit} noValidate>
         <label className="block font-medium m-2">How much is your deposit?</label>
         <input 
           type="number" 
