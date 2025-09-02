@@ -121,8 +121,11 @@ function App() {
           labels: formData.amortisationSchedule.map((item) => item.year),
           datasets: [
             {
-            label: 'Balance Remaining',
-            data: formData.amortisationSchedule.map((item) => item.balance),
+              label: 'Balance Remaining',
+              data: formData.amortisationSchedule.map((item) => item.balance),
+              borderColor: 'rgb(59, 130, 246)',
+              backgroundColor: 'rgba(59, 130, 246, 0.1)',
+              borderWidth: 2
             },
           ],
         },
@@ -163,15 +166,15 @@ function App() {
             {
               label: 'Interest',
               data: formData.amortisationSchedule.map((item) => item.interest),
-              backgroundColor: 'rgba(255, 99, 132, 0.8)',
-              borderColor: 'rgba(255, 99, 132, 1)',
+              backgroundColor: 'rgba(239, 68, 68, 0.8)', 
+              borderColor: 'rgb(239, 68, 68)',
               borderWidth: 1
             },
             {
               label: 'Capital',
               data: formData.amortisationSchedule.map((item) => item.capital),
-              backgroundColor: 'rgba(54, 162, 235, 0.8)',
-              borderColor: 'rgba(54, 162, 235, 1)',
+              backgroundColor: 'rgba(34, 197, 94, 0.8)',
+              borderColor: 'rgb(34, 197, 94)',
               borderWidth: 1
             }
           ]
@@ -203,10 +206,11 @@ function App() {
     
   return (
     <>
-      <div className="p-8">
+      <div className="py-2 px-8">
         <h1 className="text-6xl font-bold">Mortgage Calculator</h1>
       </div>
 
+      <div className="max-w-2xl mx-auto border-black m-8">
       <AffordabilityForm 
         handleAffordabilitySubmit={handleAffordabilitySubmit} 
         handleChange={handleChange}
@@ -214,6 +218,7 @@ function App() {
         annualIncome={formData.annualIncome}
         borrowingAvailable={formData.borrowingAvailable}
       />
+      </div>
 
       {showCostsForm &&
         <CostsForm 
