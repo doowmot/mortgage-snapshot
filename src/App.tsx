@@ -105,17 +105,25 @@ function App() {
       return;
     }
 
-    const results = calculateMortgageResults(
-      formData.propertyPrice, 
-      formData.depositAmount, 
-      formData.annualInterestRate, 
-      formData.mortgageTerm
-    );
-  
-    setFormData(prevState => ({
-      ...prevState,
-      ...results
-    }));
+    try {
+      const results = calculateMortgageResults(
+        formData.propertyPrice, 
+        formData.depositAmount, 
+        formData.annualInterestRate, 
+        formData.mortgageTerm
+      );
+      
+      setFormData(prevState => ({
+        ...prevState,
+        ...results
+      }));
+
+    } catch (error) {
+      setFormData(prevState => ({
+        ...prevState,
+        monthlyPayment: "Sorry, there was an error calculating your mortgage. Please try again."
+      }));
+    }
   }
   
   useEffect(() => {
