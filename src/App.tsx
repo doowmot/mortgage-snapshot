@@ -15,7 +15,7 @@ import { formatCurrency } from "./utils/format";
 import { AffordabilityForm } from "./components/AffordabilityForm";
 import { CostsForm } from "./components/CostsForm";
 import { MortgageTable } from "./components/MortgageTable";
-import { validateDeposit, validateIncome } from './utils/validation';
+import { validateDeposit, validateIncome, validateInterestRate, validateMortgageTerm, validatePropertyPrice } from './utils/validation';
 declare const Chart: any;
 
 function App() {
@@ -47,11 +47,11 @@ function App() {
   const handleAffordabilitySubmit = (event) => {
     event.preventDefault();
   
-    const depositError = validateDeposit(formData.depositAmount);
-    if (depositError) {
+    const depositErrorAffordability = validateDeposit(formData.depositAmount);
+    if (depositErrorAffordability) {
       setFormData(prevState => ({
         ...prevState,
-        borrowingAvailable: depositError,
+        borrowingAvailable: depositErrorAffordability,
       }));
       return;
     }
@@ -78,6 +78,42 @@ function App() {
 
   const handleCostsSubmit = (event) => {
     event.preventDefault();
+
+    const depositErrorCosts = validateDeposit(formData.depositAmount);
+    if (depositErrorCosts) {
+      setFormData(prevState => ({
+        ...prevState,
+        monthlyPayment: depositErrorCosts,
+      }));
+      return;
+    }
+
+    const propertyPriceError = validatePropertyPrice(formData.depositAmount, formData.propertyPrice);
+    if (propertyPriceError) {
+      setFormData(prevState => ({
+        ...prevState,
+        monthlyPayment: propertyPriceError,
+      }));
+      return;
+    }
+
+    const interestRateError = validateInterestRate(formData.annualInterestRate);
+    if (interestRateError) {
+      setFormData(prevState => ({
+        ...prevState,
+        monthlyPayment: interestRateError,
+      }));
+      return;
+    }
+
+    const mortgageTermError = validateMortgageTerm(formData.mortgageTerm);
+    if (mortgageTermError) {
+      setFormData(prevState => ({
+        ...prevState,
+        monthlyPayment: mortgageTermError,
+      }));
+      return;
+    }
     
     const monthlyInterestRate = calculateMonthlyInterestRate(formData.annualInterestRate);
     const paymentMonths = calculatePaymentMonths(formData.mortgageTerm);

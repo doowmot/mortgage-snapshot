@@ -2,7 +2,7 @@ export function CostsForm(props) {
     return (
       <div className="p-8">
         <h2 className="text-3xl font-semibold p-2">How much will it cost me?</h2>
-        <form onSubmit={props.handleCostsSubmit}>
+        <form onSubmit={props.handleCostsSubmit} noValidate>
           <label className="block font-medium m-2">How much is your deposit?</label>
           <input 
             type="number" 
