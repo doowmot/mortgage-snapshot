@@ -1,16 +1,6 @@
 import './App.css'
 import { useState, useRef, useEffect } from "react";
-import { 
-  calculateBorrowingAvailable,
-  calculateMonthlyPayment,
-  calculateMonthlyInterestRate,
-  calculatePaymentMonths,
-  calculateBorrowingRequired,
-  calculateTotalPayment,
-  calculateTotalInterest,
-  calculateStressTestAnnualInterestRate,
-  calculateAmortisationSchedule
-} from './utils/mortgageCalculations';
+import { calculateBorrowingAvailable, calculateMortgageResults} from './utils/mortgageCalculations';
 import { formatCurrency } from "./utils/format";
 import { AffordabilityForm } from "./components/AffordabilityForm";
 import { CostsForm } from "./components/CostsForm";
@@ -114,36 +104,20 @@ function App() {
       }));
       return;
     }
-    
-    const monthlyInterestRate = calculateMonthlyInterestRate(formData.annualInterestRate);
-    const paymentMonths = calculatePaymentMonths(formData.mortgageTerm);
-    const borrowingRequired = calculateBorrowingRequired(formData.propertyPrice, formData.depositAmount);
-    const monthlyPayment = calculateMonthlyPayment(borrowingRequired, monthlyInterestRate, paymentMonths);
-    const totalPayment = calculateTotalPayment(monthlyPayment, paymentMonths);
-    const totalInterest = calculateTotalInterest(totalPayment,borrowingRequired);
-    const totalCapital = borrowingRequired;
-    const stressTestAnnualInterestRate = calculateStressTestAnnualInterestRate(formData.annualInterestRate);
-    const stressTestMonthlyInterestRate = calculateMonthlyInterestRate(stressTestAnnualInterestRate);
-    const stressTestMonthlyPayment = calculateMonthlyPayment(borrowingRequired, stressTestMonthlyInterestRate, paymentMonths);
-    
-    const displayMonthlyPayment = formatCurrency(monthlyPayment);
-    const displayTotalPayment = formatCurrency(totalPayment);
-    const displayTotalInterest = formatCurrency(totalInterest);
-    const displayTotalCapital = formatCurrency(totalCapital);
-    const displayStressTestMonthlyPayment = formatCurrency(stressTestMonthlyPayment);
 
-    const amortisationSchedule = calculateAmortisationSchedule(borrowingRequired, paymentMonths, monthlyInterestRate, monthlyPayment);
+    const results = calculateMortgageResults(
+      formData.propertyPrice, 
+      formData.depositAmount, 
+      formData.annualInterestRate, 
+      formData.mortgageTerm
+    );
   
     setFormData(prevState => ({
-        ...prevState,
-        monthlyPayment: `Your monthly payment will be: ${displayMonthlyPayment}`,
-        totalPayment: `You will pay: ${displayTotalPayment} over the ${formData.mortgageTerm} year mortgage term`,
-        totalPaymentBreakdown: `This is made up of: ${displayTotalCapital} Capital and ${displayTotalInterest} Interest`,
-        stressTestMonthlyPayment: `Disclaimer: If your interest rate goes up by 3%, your monthly payment will be: ${displayStressTestMonthlyPayment}`,
-        amortisationSchedule: amortisationSchedule,
+      ...prevState,
+      ...results
     }));
   }
-
+  
   useEffect(() => {
     if (formData.amortisationSchedule.length > 0 && chartRef.current) {
       if (chartRef.current.chart) {

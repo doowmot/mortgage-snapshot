@@ -1,3 +1,5 @@
+import { formatCurrency } from "../utils/format";
+
 export const calculateBorrowingAvailable = (income) => {
     return income * 4;
 }
@@ -64,5 +66,39 @@ export const calculateAmortisationSchedule = (loanAmount, paymentMonths, monthly
       }
     }
     return amortisationSchedule;
+  }
+
+export function calculateMortgageResults(propertyPrice, depositAmount, interestRate, mortgageTerm) {
+  const monthlyInterestRate = calculateMonthlyInterestRate(interestRate);
+  const paymentMonths = calculatePaymentMonths(mortgageTerm);
+  const borrowingRequired = calculateBorrowingRequired(propertyPrice, depositAmount);
+  const monthlyPayment = calculateMonthlyPayment(borrowingRequired, monthlyInterestRate, paymentMonths);
+
+  const totalPayment = calculateTotalPayment(monthlyPayment, paymentMonths);
+  const totalInterest = calculateTotalInterest(totalPayment, borrowingRequired);
+  const totalCapital = borrowingRequired;
+
+  const stressTestAnnualInterestRate = calculateStressTestAnnualInterestRate(interestRate);
+  const stressTestMonthlyInterestRate = calculateMonthlyInterestRate(stressTestAnnualInterestRate);
+  const stressTestMonthlyPayment = calculateMonthlyPayment(borrowingRequired, stressTestMonthlyInterestRate, paymentMonths);
+
+  const displayMonthlyPayment = formatCurrency(monthlyPayment);
+  const displayTotalPayment = formatCurrency(totalPayment);
+  const displayTotalInterest = formatCurrency(totalInterest);
+  const displayTotalCapital = formatCurrency(totalCapital);
+  const displayStressTestMonthlyPayment = formatCurrency(stressTestMonthlyPayment);
+
+  const amortisationSchedule = calculateAmortisationSchedule(borrowingRequired, paymentMonths, monthlyInterestRate, monthlyPayment);
+
+  return {
+    monthlyPayment: `Your monthly payment will be: ${displayMonthlyPayment}`,
+    totalPayment: `You will pay: ${displayTotalPayment} over the ${mortgageTerm} year mortgage term`,
+    totalPaymentBreakdown: `This is made up of: ${displayTotalCapital} Capital and ${displayTotalInterest} Interest`,
+    stressTestMonthlyPayment: `Disclaimer: If your interest rate goes up by 3%, your monthly payment will be: ${displayStressTestMonthlyPayment}`,
+    amortisationSchedule: amortisationSchedule,
+  };
 }
+
+
+
 
