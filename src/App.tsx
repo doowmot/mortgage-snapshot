@@ -10,11 +10,11 @@ declare const Chart: any;
 
 function App() {
   const [formData, setFormData] = useState({
-    depositAmount: "25000",
-    annualIncome: "50000",
-    propertyPrice: "250000",
-    annualInterestRate: "5",
-    mortgageTerm: "30",
+    depositAmount: "",
+    annualIncome: "",
+    propertyPrice: "",
+    annualInterestRate: "",
+    mortgageTerm: "",
     borrowingAvailable: "",
     borrowingRequired: "",
     monthlyPayment: "",
