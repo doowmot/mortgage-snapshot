@@ -1,69 +1,74 @@
-# React + TypeScript + Vite
+# Mortgage Snapshot
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A comprehensive mortgage calculator built with JavaScript and React. 
 
-Currently, two official plugins are available:
+As a mortgage advisor, I witnessed how first-time buyers often struggle to understand how their monthly payments are allocated between interest and capital over the life of their mortgage. Existing tools didn't provide clear visualisations of this breakdown, making it difficult to explain during consultations.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Tech Stack
 
-## Expanding the ESLint configuration
+- **Frontend**: React, JavaScript, Tailwind CSS 
+- **Visualization**: Chart.js 
+- **Testing**: Jest 
+- **Build**: Vite
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Key Features
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Affordability Calculator:** Based on income multiples
+- **Monthly Payment Calculator:** Calculate accurate monthly mortgage payments with support for different interest rates and mortgage terms
+- **Visual charts** showing how interest vs. capital payments change over time 
+- **Amortisation Schedule**: Year-by-year breakdown of payments and remaining balance
+- **Stress Testing**: See how payments would change with a 3% interest rate increase
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+## Testing Strategy
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **37 unit tests** with 100% coverage on business logic
+- **Edge case validation** (negative values, boundary conditions)
+- **Separation of concerns** - all calculations isolated and testable
+- **Input validation** with user-friendly error handling
+
+### Project Structure
+
+```
+src/
+├── components/          # Reusable React components
+│   ├── AffordabilityForm.tsx
+│   ├── CostsForm.tsx
+│   └── MortgageTable.tsx
+├── utils/              # Business logic and utilities
+│   ├── mortgageCalculations.ts
+│   ├── validation.ts
+│   └── format.ts
+├── __tests__/          # Unit tests
+│   ├── mortgageCalculations.test.ts
+│   ├── validation.test.ts
+│   └── format.test.ts
+└── App.tsx             # Main application component
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Future Improvements
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- **TypeScript migration**: Add strict typing for improved maintainability
+- **Component testing**: React Testing Library integration for UI testing
+- **State management**: Implement Redux/Context for complex state scenarios
+- **Data persistence**: Save calculations for comparison and analysis
+- **API integration**: Connect to real-time interest rate feeds
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/mortgage-snapshot.git
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Run tests
+npm run test
+
+# Build for production
+npm run build
 ```
+
