@@ -5,7 +5,8 @@ import {
     calculateMonthlyInterestRate,
     calculatePaymentMonths,
     calculateBorrowingRequired,
-    calculateTotalInterest
+    calculateTotalInterest,
+    calculateMortgageResults
     } from '../utils/mortgageCalculations';
 
 describe('Mortgage Calculations', () => {
@@ -19,6 +20,13 @@ describe('Mortgage Calculations', () => {
   test("calculateBorrowingAvailable with zero income returns zero", () => {
     const income = 0;
     const result = calculateBorrowingAvailable(income);
+    expect(result).toBe(0);
+  });
+
+  test("calculateBorrowingRequired should be zero if deposit equals house price", () => {
+    const housePrice = 250000;
+    const deposit = 250000;
+    const result = calculateBorrowingRequired(housePrice, deposit);
     expect(result).toBe(0);
   });
 
@@ -61,6 +69,16 @@ describe('Mortgage Calculations', () => {
     const deposit = 50000;
     const result = calculateBorrowingRequired(housePrice, deposit);
     expect(result).toBe(200000);
+  });
+
+  test("calculateMortgageResults should return properly formatted mortgage details", () => {
+    const result = calculateMortgageResults(250000, 50000, 5, 25);
+    
+    expect(result.monthlyPayment).toContain("Your monthly payment will be: £");
+    expect(result.totalPayment).toContain("You will pay: £");
+    expect(result.totalPaymentBreakdown).toContain("This is made up of:");
+    expect(result.stressTestMonthlyPayment).toContain("Disclaimer:");
+    expect(result.amortisationSchedule).toHaveLength(26); 
   });
 
 });
