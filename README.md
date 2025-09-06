@@ -1,3 +1,5 @@
+# Mortgage Snapshot
+
 As a mortgage advisor, I witnessed how first-time buyers often struggle to understand how their monthly payments are allocated between interest and capital over the life of their mortgage. I found existing tools didn't provide clear visualisations of this breakdown, making it difficult to explain during consultations. So I've created it myself.
 
 ### Tech Stack
@@ -52,9 +54,9 @@ src/
 
 ### Live Deployment
 
-**Live Application**: www.mortgagesnapshot.co.uk
-**Hosting**: Vercel with custom domain
-**Status**: Production-ready with automated deployments
+- **Live Application**: www.mortgagesnapshot.co.uk
+- **Hosting**: Vercel with custom domain
+- **Status**: Production-ready with automated deployments
 
 ### Development Notes
 
