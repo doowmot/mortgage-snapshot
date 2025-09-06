@@ -1,13 +1,9 @@
-# Mortgage Snapshot
-
-A comprehensive mortgage calculator built with JavaScript and React. 
-
-As a mortgage advisor, I witnessed how first-time buyers often struggle to understand how their monthly payments are allocated between interest and capital over the life of their mortgage. Existing tools didn't provide clear visualisations of this breakdown, making it difficult to explain during consultations.
+As a mortgage advisor, I witnessed how first-time buyers often struggle to understand how their monthly payments are allocated between interest and capital over the life of their mortgage. I found existing tools didn't provide clear visualisations of this breakdown, making it difficult to explain during consultations. So I've created it myself.
 
 ### Tech Stack
 
 - **Frontend**: React, JavaScript, Tailwind CSS 
-- **Visualization**: Chart.js 
+- **Charts**: Chart.js 
 - **Testing**: Jest 
 - **Build**: Vite
 
@@ -53,6 +49,19 @@ src/
 - **Data persistence**: Save calculations for comparison and analysis
 - **API integration**: Connect to real-time interest rate feeds
 
+
+### Live Deployment
+
+**Live Application**: www.mortgagesnapshot.co.uk
+**Hosting**: Vercel with custom domain
+**Status**: Production-ready with automated deployments
+
+### Development Notes
+
+- **Build System**: Vite configured for TypeScript support
+- **Current Implementation**: JavaScript with plans for TypeScript migration
+- **Rationale**: Rapid prototyping in JavaScript, with TypeScript conversion planned for production enhancement
+
 ### Installation
 
 ```bash
@@ -71,4 +80,3 @@ npm run test
 # Build for production
 npm run build
 ```
-
