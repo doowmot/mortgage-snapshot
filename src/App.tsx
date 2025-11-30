@@ -225,7 +225,11 @@ function App() {
   return (
     <>
       <div className="py-2 px-8">
-        <h1 className="text-6xl font-bold">Mortgage Calculator</h1>
+        <h1 className="text-6xl font-bold">Mortgage Snapshot</h1>
+      </div>
+
+      <div className="py-2 px-8">
+        <h2 className="text-3xl font-bold">Finally, mortgages made simple.</h2> 
       </div>
 
       <div className="max-w-2xl mx-auto border-black m-8">
