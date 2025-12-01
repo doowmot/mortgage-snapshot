@@ -22,6 +22,7 @@ function App() {
     totalPaymentBreakdown: "",
     stressTestMonthlyPayment: "",
     amortisationSchedule: [],
+    displayTotalBudget: "",
   });
 
   const [showCostsForm, setShowCostsForm] = useState(false);
@@ -57,10 +58,12 @@ function App() {
   
     const borrowingAvailable = calculateBorrowingAvailable(formData.annualIncome);
     const displayBorrowingAvailable = formatCurrency(borrowingAvailable);
-  
+    const displayDepositAmount = formatCurrency(formData.depositAmount);
+    const displayTotalBudget = formatCurrency(Number(formData.depositAmount) + borrowingAvailable);
+
     setFormData(prevState => ({
       ...prevState,
-      borrowingAvailable: `You can likely borrow up to: ${displayBorrowingAvailable}`,
+      borrowingAvailable: `You can likely borrow: ${displayBorrowingAvailable}. With your deposit of ${displayDepositAmount}, your total budget is ${displayTotalBudget}`,
     }));
   
     setShowCostsForm(true);
