@@ -246,18 +246,20 @@ function App() {
       </div>
 
       {showCostsForm &&
-        <CostsForm 
-          handleCostsSubmit={handleCostsSubmit}
-          handleChange={handleChange}
-          depositAmount={formData.depositAmount}
-          propertyPrice={formData.propertyPrice}
-          annualInterestRate={formData.annualInterestRate}
-          mortgageTerm={formData.mortgageTerm}
-          monthlyPayment={formData.monthlyPayment}
-          totalPayment={formData.totalPayment}
-          totalPaymentBreakdown={formData.totalPaymentBreakdown}
-          stressTestMonthlyPayment={formData.stressTestMonthlyPayment}
-        />
+        <div className="max-w-2xl mx-auto border-black m-8">
+          <CostsForm 
+            handleCostsSubmit={handleCostsSubmit}
+            handleChange={handleChange}
+            depositAmount={formData.depositAmount}
+            propertyPrice={formData.propertyPrice}
+            annualInterestRate={formData.annualInterestRate}
+            mortgageTerm={formData.mortgageTerm}
+            monthlyPayment={formData.monthlyPayment}
+            totalPayment={formData.totalPayment}
+            totalPaymentBreakdown={formData.totalPaymentBreakdown}
+            stressTestMonthlyPayment={formData.stressTestMonthlyPayment}
+          />
+        </div>
       }
 
       {formData.amortisationSchedule.length > 0 && 
