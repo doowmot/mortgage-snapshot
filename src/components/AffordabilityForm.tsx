@@ -1,3 +1,5 @@
+import { formatCurrency } from "../utils/format";
+
 export function AffordabilityForm(props) {
   return (
     <div className="p-8">
@@ -36,8 +38,24 @@ export function AffordabilityForm(props) {
           value="calculate"
           className="bg-blue-500 text-white px-4 py-2 rounded block mx-auto hover:bg-blue-400 cursor-pointer border-2 border-black"
         />
-        <p className="text-2xl p-10 font-extrabold">{props.borrowingAvailable}</p>
-      </form>
-    </div>
-  );
+
+        {props.borrowingAvailable && ( 
+          <div className="py-8">
+            <p className="text-2xl">
+              You can likely borrow{' '}
+              <span className="text-4xl font-bold bg-yellow-300 px-3 py-1 rounded-lg inline-block">
+                {formatCurrency(props.borrowingAvailable)}.
+              </span>
+            </p>
+            <p className="text-1xl italic">
+              (With your deposit of {formatCurrency(Number(props.depositAmount))}, your total budget is{' '}
+              <span>
+                {formatCurrency(props.totalBudget)})
+              </span>
+            </p>
+          </div>
+        )}
+        </form>
+      </div>
+  )
 }
