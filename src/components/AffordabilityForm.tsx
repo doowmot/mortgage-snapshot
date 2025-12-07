@@ -2,9 +2,10 @@ import { formatCurrency } from "../utils/format";
 
 export function AffordabilityForm(props) {
   return (
-    <div className="p-8">
-      <h2 className="text-3xl font-semibold p-2">How much can I borrow?</h2>
+    <div className="py-4">
+      <h2 className="text-4xl font-bold p-2 mb-4 text-left">How much can I borrow?</h2>
       <form onSubmit={props.handleAffordabilitySubmit} noValidate>
+        
         <label className="block font-medium m-2 text-left">How much is your deposit?</label>
         <div className="relative mb-4">
           <span className="absolute left-0 top-0 bottom-0 bg-blue-500 text-white font-medium flex items-center px-4 rounded-l border-2 border-black">
@@ -35,8 +36,8 @@ export function AffordabilityForm(props) {
 
         <input
           type="submit"
-          value="calculate"
-          className="bg-blue-500 text-white px-4 py-2 rounded block mx-auto hover:bg-blue-400 cursor-pointer border-2 border-black"
+          value="Calculate"
+          className="bg-blue-500 text-white px-6 py-3 text-lg font-semibold rounded block mx-auto hover:bg-blue-400 cursor-pointer border-2 border-black transition-colors duration-200 mt-8"
         />
 
         {props.borrowingAvailable && ( 
