@@ -69,7 +69,7 @@ export function CostsForm(props) {
           className="bg-blue-500 text-white px-6 py-3 text-lg font-semibold rounded block mx-auto hover:bg-blue-400 cursor-pointer border-2 border-black transition-colors duration-200 mt-8"
         />
 
-        {props.monthlyPayment && (
+        {props.monthlyPayment > 0 && (
           <div className="py-8">
             <p className="text-2xl">
               Your monthly payment will be {' '}

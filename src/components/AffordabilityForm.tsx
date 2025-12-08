@@ -41,7 +41,7 @@ export function AffordabilityForm(props) {
           className="bg-blue-500 text-white px-6 py-3 text-lg font-semibold rounded block mx-auto hover:bg-blue-400 cursor-pointer border-2 border-black transition-colors duration-200 mt-8"
         />
 
-        {props.borrowingAvailable && ( 
+        {props.borrowingAvailable > 0 && ( 
           <div className="py-8">
             <p className="text-2xl">
               You can likely borrow{' '}
