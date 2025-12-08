@@ -1,8 +1,12 @@
+import { formatCurrency } from "../utils/format";
+
 export function CostsForm(props) {
   return (
-    <div className="p-8">
-      <h2 className="text-3xl font-semibold p-2">How much will it cost me?</h2>
+    <div className="py-4">
+      <h2 className="text-4xl font-bold p-2 mb-4 text-left">How much will it cost me?</h2>
+      
       <form onSubmit={props.handleCostsSubmit} noValidate>
+        
         <label className="block font-medium m-2 text-left">How much is your deposit?</label>
         <div className="relative mb-4">
           <span className="absolute left-0 top-0 bottom-0 bg-blue-500 text-white font-medium flex items-center px-4 rounded-l border-2 border-black">
@@ -61,13 +65,29 @@ export function CostsForm(props) {
 
         <input 
           type="submit" 
-          value="calculate"
-          className="bg-blue-500 text-white px-4 py-2 rounded block mx-auto hover:bg-blue-400 cursor-pointer border-2 border-black" 
+          value="Calculate"
+          className="bg-blue-500 text-white px-6 py-3 text-lg font-semibold rounded block mx-auto hover:bg-blue-400 cursor-pointer border-2 border-black transition-colors duration-200 mt-8"
         />
-        <p className="text-2xl p-10 font-extrabold">{props.monthlyPayment}</p>
-        <p className="text-1xl p-10 font-extrabold">{props.totalPayment}</p>
-        <p className="text-1xl p-10 font-extrabold">{props.totalPaymentBreakdown}</p>
-        <p className="text-1xl p-10 font-extrabold">{props.stressTestMonthlyPayment}</p>
+
+        {props.monthlyPayment && (
+          <div className="py-8">
+            <p className="text-2xl">
+              Your monthly payment will be {' '}
+              <span className="text-4xl font-bold bg-yellow-300 px-3 py-1 rounded-lg inline-block">
+                {formatCurrency(props.monthlyPayment)}.
+              </span>
+            </p>
+            <p className="text-xl italic mt-4">
+              (You will pay {formatCurrency(props.totalPayment)} over the {props.mortgageTerm} year mortgage term)
+            </p>
+            <p className="text-lg mt-4">
+              This is made up of {formatCurrency(props.totalCapital)} capital and {formatCurrency(props.totalInterest)} interest.
+            </p>
+            <p className="text-sm mt-6 text-gray-600">
+              Disclaimer: If your interest rate goes up by 3%, your monthly payment will be {formatCurrency(props.stressTestMonthlyPayment)}
+            </p>
+          </div>
+        )}
       </form>
     </div>
   );

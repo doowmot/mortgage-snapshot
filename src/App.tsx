@@ -1,7 +1,6 @@
 import './App.css'
 import { useState, useRef, useEffect } from "react";
 import { calculateBorrowingAvailable, calculateMortgageResults} from './utils/mortgageCalculations';
-import { formatCurrency } from "./utils/format";
 import { AffordabilityForm } from "./components/AffordabilityForm";
 import { CostsForm } from "./components/CostsForm";
 import { MortgageTable } from "./components/MortgageTable";
@@ -9,6 +8,7 @@ import { validateDeposit, validateIncome, validateInterestRate, validateMortgage
 declare const Chart: any;
 
 function App() {
+  
   const [formData, setFormData] = useState({
     depositAmount: "",
     annualIncome: "",
@@ -16,13 +16,13 @@ function App() {
     annualInterestRate: "",
     mortgageTerm: "",
     borrowingAvailable: "",
-    borrowingRequired: "",
+    totalBudget: "",
     monthlyPayment: "",
     totalPayment: "",
-    totalPaymentBreakdown: "",
+    totalInterest: "",
+    totalCapital: "",
     stressTestMonthlyPayment: "",
     amortisationSchedule: [],
-    totalBudget: "",
   });
 
   const [showCostsForm, setShowCostsForm] = useState(false);
@@ -256,7 +256,8 @@ function App() {
             mortgageTerm={formData.mortgageTerm}
             monthlyPayment={formData.monthlyPayment}
             totalPayment={formData.totalPayment}
-            totalPaymentBreakdown={formData.totalPaymentBreakdown}
+            totalInterest={formData.totalInterest}
+            totalCapital={formData.totalCapital}
             stressTestMonthlyPayment={formData.stressTestMonthlyPayment}
           />
         </div>
