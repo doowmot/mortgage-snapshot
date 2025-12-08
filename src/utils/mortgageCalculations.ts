@@ -1,5 +1,3 @@
-import { formatCurrency } from "../utils/format";
-
 export const calculateBorrowingAvailable = (income) => {
     return income * 4;
 }
@@ -82,19 +80,15 @@ export function calculateMortgageResults(propertyPrice, depositAmount, interestR
   const stressTestMonthlyInterestRate = calculateMonthlyInterestRate(stressTestAnnualInterestRate);
   const stressTestMonthlyPayment = calculateMonthlyPayment(borrowingRequired, stressTestMonthlyInterestRate, paymentMonths);
 
-  const displayMonthlyPayment = formatCurrency(monthlyPayment);
-  const displayTotalPayment = formatCurrency(totalPayment);
-  const displayTotalInterest = formatCurrency(totalInterest);
-  const displayTotalCapital = formatCurrency(totalCapital);
-  const displayStressTestMonthlyPayment = formatCurrency(stressTestMonthlyPayment);
-
   const amortisationSchedule = calculateAmortisationSchedule(borrowingRequired, paymentMonths, monthlyInterestRate, monthlyPayment);
 
   return {
-    monthlyPayment: `Your monthly payment will be: ${displayMonthlyPayment}`,
-    totalPayment: `You will pay: ${displayTotalPayment} over the ${mortgageTerm} year mortgage term`,
-    totalPaymentBreakdown: `This is made up of: ${displayTotalCapital} Capital and ${displayTotalInterest} Interest`,
-    stressTestMonthlyPayment: `Disclaimer: If your interest rate goes up by 3%, your monthly payment will be: ${displayStressTestMonthlyPayment}`,
+    monthlyPayment: monthlyPayment,
+    totalPayment: totalPayment,
+    totalInterest: totalInterest,
+    totalCapital: totalCapital,
+    stressTestMonthlyPayment: stressTestMonthlyPayment,
+    mortgageTerm: mortgageTerm,
     amortisationSchedule: amortisationSchedule,
   };
 }
