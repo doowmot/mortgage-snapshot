@@ -1,6 +1,6 @@
 import './App.css'
 import { useState, useRef, useEffect } from "react";
-import { calculateBorrowingAvailable, calculateMortgageResults} from './utils/mortgageCalculations';
+import { calculateAffordabilityResults, calculateMortgageResults } from './utils/mortgageCalculations';
 import { AffordabilityForm } from "./components/AffordabilityForm";
 import { CostsForm } from "./components/CostsForm";
 import { MortgageTable } from "./components/MortgageTable";
@@ -55,14 +55,12 @@ function App() {
       }));
       return;
     }
-  
-    const borrowingAvailable = calculateBorrowingAvailable(formData.annualIncome);
-    const totalBudget = Number(formData.depositAmount) + borrowingAvailable;
         
+    const results = calculateAffordabilityResults(formData.annualIncome, formData.depositAmount);
+      
     setFormData(prevState => ({
       ...prevState,
-      borrowingAvailable: borrowingAvailable,
-      totalBudget: totalBudget,
+      ...results
     }));
   
     setShowCostsForm(true);

@@ -4,6 +4,7 @@ export function AffordabilityForm(props) {
   return (
     <div className="py-4">
       <h2 className="text-4xl font-bold p-2 mb-4 text-left">How much can I borrow?</h2>
+      
       <form onSubmit={props.handleAffordabilitySubmit} noValidate>
         
         <label className="block font-medium m-2 text-left">How much is your deposit?</label>
@@ -49,14 +50,14 @@ export function AffordabilityForm(props) {
               </span>
             </p>
             <p className="text-1xl italic">
-              (With your deposit of {formatCurrency(Number(props.depositAmount))}, your total budget is{' '}
+              (With your deposit of {formatCurrency(props.depositAmount)}, your total budget is{' '}
               <span>
                 {formatCurrency(props.totalBudget)})
               </span>
             </p>
           </div>
         )}
-        </form>
-      </div>
+      </form>
+    </div>
   )
 }

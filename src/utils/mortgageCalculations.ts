@@ -66,6 +66,16 @@ export const calculateAmortisationSchedule = (loanAmount, paymentMonths, monthly
     return amortisationSchedule;
   }
 
+export function calculateAffordabilityResults(annualIncome, depositAmount) {
+  const borrowingAvailable = calculateBorrowingAvailable(annualIncome);
+  const totalBudget = Number(depositAmount) + borrowingAvailable;
+  
+  return {
+    borrowingAvailable: borrowingAvailable,
+    totalBudget: totalBudget,
+  };
+}
+
 export function calculateMortgageResults(propertyPrice, depositAmount, interestRate, mortgageTerm) {
   const monthlyInterestRate = calculateMonthlyInterestRate(interestRate);
   const paymentMonths = calculatePaymentMonths(mortgageTerm);
