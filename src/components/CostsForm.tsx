@@ -77,14 +77,17 @@ export function CostsForm(props) {
                 {formatCurrency(props.monthlyPayment)}.
               </span>
             </p>
-            <p className="text-xl italic mt-4">
-              (You will pay {formatCurrency(props.totalPayment)} over the {props.mortgageTerm} year mortgage term)
+            <p className="text-sm text-gray-600 italic">
+              If your interest rate increases by 3%, your monthly payment will be {formatCurrency(props.stressTestMonthlyPayment)}
             </p>
-            <p className="text-lg mt-4">
-              This is made up of {formatCurrency(props.totalCapital)} capital and {formatCurrency(props.totalInterest)} interest.
+            <p className="text-2xl">
+              In total, you will repay {' '}
+              <span className="text-4xl font-bold bg-yellow-300 mt-8 px-3 py-1 rounded-lg inline-block">
+                {formatCurrency(props.totalPayment)}.
+              </span>
             </p>
-            <p className="text-sm mt-6 text-gray-600">
-              Disclaimer: If your interest rate goes up by 3%, your monthly payment will be {formatCurrency(props.stressTestMonthlyPayment)}
+            <p className="text-1xl italic">
+              (With your assumed borrowing of {formatCurrency(props.totalCapital)}, you'll repay {formatCurrency(props.totalCapital)} capital and {formatCurrency(props.totalInterest)} in interest.)
             </p>
           </div>
         )}
