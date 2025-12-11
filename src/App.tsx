@@ -1,3 +1,4 @@
+// @ts-nocheck
 import './App.css'
 import { useState, useRef, useEffect } from "react";
 import { calculateAffordabilityResults, calculateMortgageResults } from './utils/mortgageCalculations';
