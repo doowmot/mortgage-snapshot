@@ -4,9 +4,9 @@ import { useState, useRef, useEffect } from "react";
 import { calculateAffordabilityResults, calculateMortgageResults } from './utils/mortgageCalculations';
 import { AffordabilityForm } from "./components/AffordabilityForm";
 import { CostsForm } from "./components/CostsForm";
+import { MortgageBalanceChart } from './components/MortgageBalanceChart';
 import { MortgageTable } from "./components/MortgageTable";
 import { validateDeposit, validateIncome, validateInterestRate, validateMortgageTerm, validatePropertyPrice } from './utils/validation';
-declare const Chart: any;
 
 function App() {
   
@@ -27,8 +27,6 @@ function App() {
   });
 
   const [showCostsForm, setShowCostsForm] = useState(false);
-
-  const chartRef = useRef(null);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -125,61 +123,6 @@ function App() {
       }));
     }
   }
-  
-  useEffect(() => {
-    if (formData.amortisationSchedule.length > 0 && chartRef.current) {
-      if (chartRef.current.chart) {
-        chartRef.current.chart.destroy();
-      }
-      
-      const ctx = chartRef.current.getContext('2d');
-      const newChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: formData.amortisationSchedule.map((item) => item.year),
-          datasets: [
-            {
-              label: 'Balance Remaining',
-              data: formData.amortisationSchedule.map((item) => item.balance),
-              borderColor: 'rgb(30, 58, 138)',
-              borderWidth: 2
-            },
-            {
-            label: 'Cumulative Interest Paid',
-            data: formData.amortisationSchedule.map((item) => item.cumulativeInterest),
-            borderColor: 'rgb(74, 222, 128)',
-            borderWidth: 2
-            },
-            {
-            label: 'Cumulative Capital Paid',
-            data: formData.amortisationSchedule.map((item) => item.cumulativeCapital),
-            borderColor: 'rgb(96, 165, 250)',
-            borderWidth: 2
-            },
-
-          ],
-        },
-        options: {
-          scales: {
-            x: {
-              title: {
-                display: true,
-                text: "Year"
-              }
-            },
-            y: {
-              title: {
-                display: true,
-                text: "£"
-              }
-            },
-          }
-        }
-      });
-      
-      chartRef.current.chart = newChart;
-    }
-  }, [formData.amortisationSchedule]);
     
   return (
     <>
@@ -219,12 +162,17 @@ function App() {
           />
         </div>
       }
-
+      
       {formData.amortisationSchedule.length > 0 && 
       <div>
-        <h2>Mortgage Balance Over Time</h2>
-        <canvas ref={chartRef} width="400" height="200"></canvas>
-
+        <MortgageBalanceChart
+        amortisationSchedule={formData.amortisationSchedule}
+        />
+      </div>
+      }
+      
+      {formData.amortisationSchedule.length > 0 && 
+      <div>
         <MortgageTable
         amortisationSchedule={formData.amortisationSchedule}
         />
