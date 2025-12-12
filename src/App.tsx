@@ -142,10 +142,22 @@ function App() {
             {
               label: 'Balance Remaining',
               data: formData.amortisationSchedule.map((item) => item.balance),
-              borderColor: 'rgb(59, 130, 246)',
-              backgroundColor: 'rgba(59, 130, 246, 0.1)',
+              borderColor: 'rgb(30, 58, 138)',
               borderWidth: 2
             },
+            {
+            label: 'Cumulative Interest Paid',
+            data: formData.amortisationSchedule.map((item) => item.cumulativeInterest),
+            borderColor: 'rgb(74, 222, 128)',
+            borderWidth: 2
+            },
+            {
+            label: 'Cumulative Capital Paid',
+            data: formData.amortisationSchedule.map((item) => item.cumulativeCapital),
+            borderColor: 'rgb(96, 165, 250)',
+            borderWidth: 2
+            },
+
           ],
         },
         options: {

@@ -38,7 +38,7 @@ export const calculateAmortisationSchedule = (loanAmount, paymentMonths, monthly
     let cumulativeInterestPaid = 0;
     let cumulativeCapitalPaid = 0;
 
-    amortisationSchedule.push({year: 0, interest: 0, capital: 0, balance: currentBalance, cumulateInterest: cumulativeInterestPaid, cumulativeCapital: cumulativeCapitalPaid,});
+    amortisationSchedule.push({year: 0, interest: 0, capital: 0, balance: currentBalance, cumulativeInterest: cumulativeInterestPaid, cumulativeCapital: cumulativeCapitalPaid,});
 
     for (let month = 1; month <= paymentMonths; month++) {
       const monthlyInterest = currentBalance * monthlyRate;
