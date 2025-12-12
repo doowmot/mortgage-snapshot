@@ -35,7 +35,10 @@ export const calculateAmortisationSchedule = (loanAmount, paymentMonths, monthly
     let currentBalance = loanAmount;
     let annualInterestPaid = 0;
     let annualCapitalPaid = 0;
-    amortisationSchedule.push({year: 0, interest: 0, capital: 0, balance: currentBalance});
+    let cumulativeInterestPaid = 0;
+    let cumulativeCapitalPaid = 0;
+
+    amortisationSchedule.push({year: 0, interest: 0, capital: 0, balance: currentBalance, cumulateInterest: cumulativeInterestPaid, cumulativeCapital: cumulativeCapitalPaid,});
 
     for (let month = 1; month <= paymentMonths; month++) {
       const monthlyInterest = currentBalance * monthlyRate;
@@ -53,12 +56,19 @@ export const calculateAmortisationSchedule = (loanAmount, paymentMonths, monthly
 
       if (month % 12 === 0) {
         const year = month / 12;
+
+        cumulativeInterestPaid += annualInterestPaid;
+        cumulativeCapitalPaid += annualCapitalPaid;
+
         amortisationSchedule.push({
           year: year, 
           interest: annualInterestPaid, 
           capital: annualCapitalPaid, 
-          balance: Math.max(0, currentBalance)
+          balance: Math.max(0, currentBalance),
+          cumulativeInterest: cumulativeInterestPaid,
+          cumulativeCapital: cumulativeCapitalPaid,
         });
+
         annualInterestPaid = 0;
         annualCapitalPaid = 0;
       }
