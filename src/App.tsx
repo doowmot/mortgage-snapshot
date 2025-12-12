@@ -29,7 +29,6 @@ function App() {
   const [showCostsForm, setShowCostsForm] = useState(false);
 
   const chartRef = useRef(null);
-  const barChartRef = useRef(null);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -181,59 +180,6 @@ function App() {
       chartRef.current.chart = newChart;
     }
   }, [formData.amortisationSchedule]);
-
-  useEffect(() => {
-    if (formData.amortisationSchedule.length > 0 && barChartRef.current) {
-      if (barChartRef.current.chart) {
-        barChartRef.current.chart.destroy();
-      }
-      
-      const barCtx = barChartRef.current.getContext('2d');
-      const barChart = new Chart(barCtx, {
-        type: 'bar',
-        data: {
-          labels: formData.amortisationSchedule.map((item) => item.year),
-          datasets: [
-            {
-              label: 'Interest',
-              data: formData.amortisationSchedule.map((item) => item.interest),
-              backgroundColor: 'rgba(239, 68, 68, 0.8)', 
-              borderColor: 'rgb(239, 68, 68)',
-              borderWidth: 1
-            },
-            {
-              label: 'Capital',
-              data: formData.amortisationSchedule.map((item) => item.capital),
-              backgroundColor: 'rgba(34, 197, 94, 0.8)',
-              borderColor: 'rgb(34, 197, 94)',
-              borderWidth: 1
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          scales: {
-            x: {
-              stacked: true,
-              title: {
-                display: true,
-                text: 'Year'
-              }
-            },
-            y: {
-              stacked: true,
-              title: {
-                display: true,
-                text: '£'
-              }
-            }
-          }
-        }
-      });
-      
-      barChartRef.current.chart = barChart;
-    }
-  }, [formData.amortisationSchedule]);
     
   return (
     <>
@@ -278,9 +224,6 @@ function App() {
       <div>
         <h2>Mortgage Balance Over Time</h2>
         <canvas ref={chartRef} width="400" height="200"></canvas>
-        
-        <h2>Annual Interest vs Capital Payments</h2>
-        <canvas ref={barChartRef} width="400" height="200"></canvas>
 
         <MortgageTable
         amortisationSchedule={formData.amortisationSchedule}
