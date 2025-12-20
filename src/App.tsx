@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { calculateAffordabilityResults, calculateMortgageResults } from './utils/mortgageCalculations';
 import { AffordabilityForm } from "./components/AffordabilityForm";
 import { CostsForm } from "./components/CostsForm";
-import { MortgageBalanceChart } from './components/MortgageBalanceChart';
+import { MortgageBalanceChart } from './components/MortgageChart';
 import { MortgageTable } from "./components/MortgageTable";
 import { validateDeposit, validateIncome, validateInterestRate, validateMortgageTerm, validatePropertyPrice } from './utils/validation';
 
