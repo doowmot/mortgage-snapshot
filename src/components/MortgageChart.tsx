@@ -1,8 +1,9 @@
 import { useRef, useEffect } from "react";
 
+declare const Chart: any;
+
 export function MortgageBalanceChart({ amortisationSchedule }) {
 
-    declare const Chart: any;
     const chartRef = useRef(null);
 
     useEffect(() => {
