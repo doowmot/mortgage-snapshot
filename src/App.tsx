@@ -126,13 +126,22 @@ function App() {
     
   return (
     <>
-      <div className="py-2 px-8">
-        <h1 className="text-6xl font-bold">Mortgage Snapshot</h1>
-      </div>
+      <header>
+        <h1 className="text-2xl font-bold text-left">Mortgage Snapshot</h1>
+      </header>
 
-      <div className="py-2 px-8">
-        <h2 className="text-3xl font-bold">Finally, mortgages made simple.</h2> 
-      </div>
+      <main className="py-14">
+        <h2 className="text-5xl font-bold px-50">When do you actually start owning your home?</h2>
+        
+        <p className="text-xl mt-4">Most people don't realise the bank gets paid first for years.</p>
+
+        <button
+          type="button"
+          className="bg-blue-500 text-white px-6 py-3 text-lg font-bold rounded block mx-auto hover:bg-blue-400 cursor-pointer border-2 border-black transition-colors duration-200 mt-8"
+        >
+          Calculate your inflection point
+        </button>
+      </main>
 
       <div className="max-w-2xl mx-auto border-black m-8">
       <AffordabilityForm 
