@@ -11,7 +11,7 @@ export function MortgageTable(props) {
               <th className="border-2 border-black p-3 font-semibold text-center w-1/4">Capital</th>
               <th className="border-2 border-black p-3 font-semibold text-center w-1/4">Balance Remaining</th>
             </tr>
-            {props.amortisationSchedule.map((item) => (
+            {props.yearlyAmortisationSchedule.map((item) => (
               <tr key={item.year} className="hover:bg-gray-50">
                 <td className="border-2 border-black p-3 text-center">{item.year}</td>
                 <td className="border-2 border-black p-3 text-center">{formatCurrency(item.interest)}</td>

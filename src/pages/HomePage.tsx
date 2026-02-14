@@ -1,11 +1,14 @@
 // @ts-nocheck
 import { useState } from "react";
+import { calculateMortgageResults } from "../utils/mortgageCalculations";
+import { MortgageTable } from "../components/MortgageTable";
 
 export function HomePage() {
   const [formData, setFormData] = useState({
     borrowingAmount: "",
     interestRate: "",
     mortgageTerm: "",
+    yearlyAmortisationSchedule: [],
   });
 
   const handleChange = (event) => {
@@ -15,7 +18,17 @@ export function HomePage() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // TODO: validate inputs, run calculations, display results
+
+    const results = calculateMortgageResults(
+      formData.borrowingAmount,
+      formData.interestRate,
+      formData.mortgageTerm
+    );
+
+    setFormData(prevState => ({
+      ...prevState,
+      yearlyAmortisationSchedule: results.yearlyAmortisationSchedule,
+    }));
   }
 
   return (
@@ -69,6 +82,12 @@ export function HomePage() {
           </button>
         </form>
       </div>
+
+      {formData.yearlyAmortisationSchedule.length > 0 &&
+        <div>
+          <MortgageTable yearlyAmortisationSchedule={formData.yearlyAmortisationSchedule} />
+        </div>
+      }
 
       {/* TODO: Inflection Point section */}
       {/* Line chart: Year vs Annual Payment (interest line + capital line) */}

@@ -30,15 +30,15 @@ export const calculateStressTestAnnualInterestRate = (annualRate) => {
     return (parseFloat(annualRate) + 3);
 }
 
-export const calculateAmortisationSchedule = (loanAmount, paymentMonths, monthlyRate, monthlyPayment) => {
-    const amortisationSchedule = [];
+export const calculateYearlyAmortisationSchedule = (loanAmount, paymentMonths, monthlyRate, monthlyPayment) => {
+    const yearlyAmortisationSchedule = [];
     let currentBalance = loanAmount;
     let annualInterestPaid = 0;
     let annualCapitalPaid = 0;
     let cumulativeInterestPaid = 0;
     let cumulativeCapitalPaid = 0;
 
-    amortisationSchedule.push({year: 0, interest: 0, capital: 0, balance: currentBalance, cumulativeInterest: cumulativeInterestPaid, cumulativeCapital: cumulativeCapitalPaid,});
+    yearlyAmortisationSchedule.push({year: 0, interest: 0, capital: 0, balance: currentBalance, cumulativeInterest: cumulativeInterestPaid, cumulativeCapital: cumulativeCapitalPaid,});
 
     for (let month = 1; month <= paymentMonths; month++) {
       const monthlyInterest = currentBalance * monthlyRate;
@@ -60,7 +60,7 @@ export const calculateAmortisationSchedule = (loanAmount, paymentMonths, monthly
         cumulativeInterestPaid += annualInterestPaid;
         cumulativeCapitalPaid += annualCapitalPaid;
 
-        amortisationSchedule.push({
+        yearlyAmortisationSchedule.push({
           year: year, 
           interest: annualInterestPaid, 
           capital: annualCapitalPaid, 
@@ -73,7 +73,7 @@ export const calculateAmortisationSchedule = (loanAmount, paymentMonths, monthly
         annualCapitalPaid = 0;
       }
     }
-    return amortisationSchedule;
+    return yearlyAmortisationSchedule;
   }
 
 export function calculateAffordabilityResults(annualIncome, depositAmount) {
@@ -86,21 +86,20 @@ export function calculateAffordabilityResults(annualIncome, depositAmount) {
   };
 }
 
-export function calculateMortgageResults(propertyPrice, depositAmount, interestRate, mortgageTerm) {
+export function calculateMortgageResults(borrowingAmount, interestRate, mortgageTerm) {
   const monthlyInterestRate = calculateMonthlyInterestRate(interestRate);
   const paymentMonths = calculatePaymentMonths(mortgageTerm);
-  const borrowingRequired = calculateBorrowingRequired(propertyPrice, depositAmount);
-  const monthlyPayment = calculateMonthlyPayment(borrowingRequired, monthlyInterestRate, paymentMonths);
+  const monthlyPayment = calculateMonthlyPayment(borrowingAmount, monthlyInterestRate, paymentMonths);
 
   const totalPayment = calculateTotalPayment(monthlyPayment, paymentMonths);
-  const totalInterest = calculateTotalInterest(totalPayment, borrowingRequired);
-  const totalCapital = borrowingRequired;
+  const totalInterest = calculateTotalInterest(totalPayment, borrowingAmount);
+  const totalCapital = borrowingAmount;
 
   const stressTestAnnualInterestRate = calculateStressTestAnnualInterestRate(interestRate);
   const stressTestMonthlyInterestRate = calculateMonthlyInterestRate(stressTestAnnualInterestRate);
-  const stressTestMonthlyPayment = calculateMonthlyPayment(borrowingRequired, stressTestMonthlyInterestRate, paymentMonths);
+  const stressTestMonthlyPayment = calculateMonthlyPayment(borrowingAmount, stressTestMonthlyInterestRate, paymentMonths);
 
-  const amortisationSchedule = calculateAmortisationSchedule(borrowingRequired, paymentMonths, monthlyInterestRate, monthlyPayment);
+  const yearlyAmortisationSchedule = calculateYearlyAmortisationSchedule(borrowingAmount, paymentMonths, monthlyInterestRate, monthlyPayment);
 
   return {
     monthlyPayment: monthlyPayment,
@@ -109,7 +108,7 @@ export function calculateMortgageResults(propertyPrice, depositAmount, interestR
     totalCapital: totalCapital,
     stressTestMonthlyPayment: stressTestMonthlyPayment,
     mortgageTerm: mortgageTerm,
-    amortisationSchedule: amortisationSchedule,
+    yearlyAmortisationSchedule: yearlyAmortisationSchedule,
   };
 }
 

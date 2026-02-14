@@ -2,12 +2,12 @@ import { useRef, useEffect } from "react";
 
 declare const Chart: any;
 
-export function MortgageBalanceChart({ amortisationSchedule }) {
+export function MortgageBalanceChart({ yearlyAmortisationSchedule }) {
 
     const chartRef = useRef(null);
 
     useEffect(() => {
-        if (amortisationSchedule.length > 0 && chartRef.current) {
+        if (yearlyAmortisationSchedule.length > 0 && chartRef.current) {
           if (chartRef.current.chart) {
             chartRef.current.chart.destroy();
           }
@@ -16,11 +16,11 @@ export function MortgageBalanceChart({ amortisationSchedule }) {
           const newChart = new Chart(ctx, {
             type: 'line',
             data: {
-              labels: amortisationSchedule.map((item) => item.year),
+              labels: yearlyAmortisationSchedule.map((item) => item.year),
               datasets: [
                 {
                   label: 'Balance Remaining',
-                  data: amortisationSchedule.map((item) => item.balance),
+                  data: yearlyAmortisationSchedule.map((item) => item.balance),
                   borderColor: 'rgb(59 130 246)',
                   backgroundColor: 'rgb(59 130 246)', 
                   borderWidth: 5,
@@ -28,7 +28,7 @@ export function MortgageBalanceChart({ amortisationSchedule }) {
                 },
                 {
                 label: 'Cumulative Interest Paid',
-                data: amortisationSchedule.map((item) => item.cumulativeInterest),
+                data: yearlyAmortisationSchedule.map((item) => item.cumulativeInterest),
                 borderColor: 'rgb(74, 222, 128)',
                 backgroundColor: 'rgb(74, 222, 128)', 
                 borderWidth: 5,
@@ -36,7 +36,7 @@ export function MortgageBalanceChart({ amortisationSchedule }) {
                 },
                 {
                 label: 'Cumulative Capital Paid',
-                data: amortisationSchedule.map((item) => item.cumulativeCapital),
+                data: yearlyAmortisationSchedule.map((item) => item.cumulativeCapital),
                 borderColor: 'rgb(30, 58, 138)',
                 backgroundColor: 'rgb(30, 58, 138)',
                 borderWidth: 5,
@@ -87,7 +87,7 @@ export function MortgageBalanceChart({ amortisationSchedule }) {
           
           chartRef.current.chart = newChart;
         }
-      }, [amortisationSchedule]);
+      }, [yearlyAmortisationSchedule]);
 
   return (
     <canvas ref={chartRef} width="400" height="200"></canvas>

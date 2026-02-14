@@ -71,14 +71,15 @@ describe('Mortgage Calculations', () => {
     expect(result).toBe(200000);
   });
 
-  test("calculateMortgageResults should return properly formatted mortgage details", () => {
-    const result = calculateMortgageResults(250000, 50000, 5, 25);
+  test("calculateMortgageResults should return correct mortgage details", () => {
+    const result = calculateMortgageResults(200000, 5, 25);
     
-    expect(result.monthlyPayment).toContain("Your monthly payment will be: £");
-    expect(result.totalPayment).toContain("You will pay: £");
-    // expect(result.totalPaymentBreakdown).toContain("This is made up of:");
-    expect(result.stressTestMonthlyPayment).toContain("Disclaimer:");
-    expect(result.amortisationSchedule).toHaveLength(26); 
+    expect(result.monthlyPayment).toBe(1169);
+    expect(result.totalPayment).toBe(350700);
+    expect(result.totalInterest).toBe(150700);
+    expect(result.totalCapital).toBe(200000);
+    expect(result.stressTestMonthlyPayment).toBe(1544);
+    expect(result.yearlyAmortisationSchedule).toHaveLength(26); 
   });
 
 });
