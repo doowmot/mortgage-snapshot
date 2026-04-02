@@ -14,6 +14,8 @@ export function InflectionPointChart({ yearlyAmortisationSchedule }) {
             chartRef.current.chart.destroy();
           }
           
+          const inflectionYear = yearlyData.find((item) => item.capital > item.interest)?.year;
+
           const ctx = chartRef.current.getContext('2d');
           const newChart = new Chart(ctx, {
             type: 'line',
@@ -44,7 +46,31 @@ export function InflectionPointChart({ yearlyAmortisationSchedule }) {
                   labels: {
                     color: 'rgb(0,0,0)',
                   }
-                }
+                },
+                annotation: inflectionYear ? {
+                  annotations: {
+                    inflectionLine: {
+                      type: 'line',
+                      scaleID: 'x',
+                      value: inflectionYear,
+                      borderColor: 'rgba(0, 0, 0, 0.6)',
+                      borderWidth: 2,
+                      borderDash: [6, 6],
+                      label: {
+                        display: true,
+                        content: `Inflection: Year ${inflectionYear}`,
+                        position: 'start',
+                        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                        color: '#fff',
+                        font: {
+                          weight: 'bold',
+                          size: 12,
+                        },
+                        padding: 6,
+                      }
+                    }
+                  }
+                } : {},
               },
               scales: {
                 x: {

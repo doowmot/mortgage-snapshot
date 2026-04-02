@@ -14,6 +14,8 @@ export function MilestoneChart({ yearlyAmortisationSchedule }) {
             chartRef.current.chart.destroy();
           }
           
+          const milestoneYear = yearlyData.find((item) => item.cumulativeCapital > item.cumulativeInterest)?.year;
+
           const ctx = chartRef.current.getContext('2d');
           const newChart = new Chart(ctx, {
             type: 'line',
@@ -44,7 +46,31 @@ export function MilestoneChart({ yearlyAmortisationSchedule }) {
                   labels: {
                     color: 'rgb(0,0,0)',
                   }
-                }
+                },
+                annotation: milestoneYear ? {
+                  annotations: {
+                    milestoneLine: {
+                      type: 'line',
+                      scaleID: 'x',
+                      value: milestoneYear,
+                      borderColor: 'rgba(0, 0, 0, 0.6)',
+                      borderWidth: 2,
+                      borderDash: [6, 6],
+                      label: {
+                        display: true,
+                        content: `Milestone: Year ${milestoneYear}`,
+                        position: 'start',
+                        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                        color: '#fff',
+                        font: {
+                          weight: 'bold',
+                          size: 12,
+                        },
+                        padding: 6,
+                      }
+                    }
+                  }
+                } : {},
               },
               scales: {
                 x: {
