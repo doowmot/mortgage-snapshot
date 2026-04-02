@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { useState } from "react";
 import { calculateMortgageResults } from "../utils/mortgageCalculations";
+import { formatCurrency } from "../utils/format";
 import { MortgageTable } from "../components/MortgageTable";
 import { InflectionPointChart } from "../components/InflectionPointChart";
 import { MilestoneChart } from "../components/MilestoneChart";
@@ -10,6 +11,8 @@ export function HomePage() {
     borrowingAmount: "",
     interestRate: "",
     mortgageTerm: "",
+    totalPayment: 0,
+    totalInterest: 0,
     yearlyAmortisationSchedule: [],
   });
 
@@ -29,6 +32,8 @@ export function HomePage() {
 
     setFormData(prevState => ({
       ...prevState,
+      totalPayment: results.totalPayment,
+      totalInterest: results.totalInterest,
       yearlyAmortisationSchedule: results.yearlyAmortisationSchedule,
     }));
   }
@@ -89,29 +94,46 @@ export function HomePage() {
         const yearlyData = formData.yearlyAmortisationSchedule.filter((item) => item.year !== 0);
         const inflectionYear = yearlyData.find((item) => item.capital > item.interest)?.year;
         const milestoneYear = yearlyData.find((item) => item.cumulativeCapital > item.cumulativeInterest)?.year;
+        const repaymentRatio = (formData.totalPayment / Number(formData.borrowingAmount)).toFixed(2);
 
         return (
           <>
             <section className="max-w-4xl mx-auto px-8 mt-10">
-              <h3 className="text-2xl font-bold mb-2">Inflection Point</h3>
-              <p className="mb-4">The year when your annual capital payments overtake your annual interest payments.</p>
-              {inflectionYear && (
-                <p className="text-xl font-semibold mb-4">Your Inflection Point: Year {inflectionYear}</p>
-              )}
+              <div className="grid grid-cols-3 gap-6">
+                <div className="bg-gray-50 rounded-lg p-6">
+                  <h3 className="text-sm font-medium text-gray-500 mb-1">What you actually pay back</h3>
+                  <p className="text-3xl font-bold mb-2">{formatCurrency(formData.totalPayment)}</p>
+                  <p className="text-sm text-gray-600">
+                    {formatCurrency(Number(formData.borrowingAmount))} borrowed + {formatCurrency(formData.totalInterest)} in interest — for every £1 borrowed, you repay £{repaymentRatio}
+                  </p>
+                </div>
+
+                <div className="bg-gray-50 rounded-lg p-6">
+                  <h3 className="text-sm font-medium text-gray-500 mb-1">Inflection point</h3>
+                  <p className="text-3xl font-bold mb-2">Year {inflectionYear}</p>
+                  <p className="text-sm text-gray-600">Capital payment first exceeds interest</p>
+                </div>
+
+                <div className="bg-gray-50 rounded-lg p-6">
+                  <h3 className="text-sm font-medium text-gray-500 mb-1">Cumulative crossover</h3>
+                  <p className="text-3xl font-bold mb-2">Year {milestoneYear}</p>
+                  <p className="text-sm text-gray-600">You've paid more capital than interest total</p>
+                </div>
+              </div>
+            </section>
+
+            <section className="max-w-4xl mx-auto px-8 mt-10">
+              <h3 className="text-2xl font-bold mb-4">Inflection Point</h3>
               <InflectionPointChart yearlyAmortisationSchedule={formData.yearlyAmortisationSchedule} />
             </section>
 
             <section className="max-w-4xl mx-auto px-8 mt-10">
-              <h3 className="text-2xl font-bold mb-2">Milestone</h3>
-              <p className="mb-4">The year when the total capital you've paid exceeds the total interest you've paid.</p>
-              {milestoneYear && (
-                <p className="text-xl font-semibold mb-4">Your Milestone: Year {milestoneYear}</p>
-              )}
+              <h3 className="text-2xl font-bold mb-4">Milestone</h3>
               <MilestoneChart yearlyAmortisationSchedule={formData.yearlyAmortisationSchedule} />
             </section>
 
             <section className="max-w-4xl mx-auto px-8 mt-10">
-              <h3 className="text-2xl font-bold mb-2">Year-by-Year Breakdown</h3>
+              <h3 className="text-2xl font-bold mb-4">Year-by-Year Breakdown</h3>
               <MortgageTable yearlyAmortisationSchedule={formData.yearlyAmortisationSchedule} />
             </section>
           </>
