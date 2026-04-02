@@ -92,8 +92,8 @@ export function HomePage() {
 
       {formData.yearlyAmortisationSchedule.length > 0 && (() => {
         const yearlyData = formData.yearlyAmortisationSchedule.filter((item) => item.year !== 0);
-        const inflectionYear = yearlyData.find((item) => item.capital > item.interest)?.year;
-        const milestoneYear = yearlyData.find((item) => item.cumulativeCapital > item.cumulativeInterest)?.year;
+        const inflectionRow = yearlyData.find((item) => item.capital > item.interest);
+        const milestoneRow = yearlyData.find((item) => item.cumulativeCapital > item.cumulativeInterest);
         const repaymentRatio = (formData.totalPayment / Number(formData.borrowingAmount)).toFixed(2);
 
         return (
@@ -108,29 +108,69 @@ export function HomePage() {
                   </p>
                 </div>
 
-                <div className="bg-gray-50 rounded-lg p-6">
-                  <h3 className="text-sm font-medium text-gray-500 mb-1">Inflection point</h3>
-                  <p className="text-3xl font-bold mb-2">Year {inflectionYear}</p>
-                  <p className="text-sm text-gray-600">Capital payment first exceeds interest</p>
-                </div>
+                {inflectionRow && (
+                  <div className="bg-gray-50 rounded-lg p-6">
+                    <h3 className="text-sm font-medium text-gray-500 mb-1">Inflection point</h3>
+                    <p className="text-3xl font-bold mb-2">Year {inflectionRow.year}</p>
+                    <p className="text-sm text-gray-600">Capital payment first exceeds interest</p>
+                  </div>
+                )}
 
-                <div className="bg-gray-50 rounded-lg p-6">
-                  <h3 className="text-sm font-medium text-gray-500 mb-1">Cumulative crossover</h3>
-                  <p className="text-3xl font-bold mb-2">Year {milestoneYear}</p>
-                  <p className="text-sm text-gray-600">You've paid more capital than interest total</p>
-                </div>
+                {milestoneRow && (
+                  <div className="bg-gray-50 rounded-lg p-6">
+                    <h3 className="text-sm font-medium text-gray-500 mb-1">Cumulative crossover</h3>
+                    <p className="text-3xl font-bold mb-2">Year {milestoneRow.year}</p>
+                    <p className="text-sm text-gray-600">You've paid more capital than interest total</p>
+                  </div>
+                )}
               </div>
             </section>
 
-            <section className="max-w-4xl mx-auto px-8 mt-10">
-              <h3 className="text-2xl font-bold mb-4">Inflection Point</h3>
-              <InflectionPointChart yearlyAmortisationSchedule={formData.yearlyAmortisationSchedule} />
-            </section>
+            {inflectionRow && (
+              <section className="max-w-4xl mx-auto px-8 mt-10">
+                <h3 className="text-2xl font-bold">The Inflection Point</h3>
+                <p className="text-gray-600 mb-4">When annual capital beats annual interest</p>
 
-            <section className="max-w-4xl mx-auto px-8 mt-10">
-              <h3 className="text-2xl font-bold mb-4">Milestone</h3>
-              <MilestoneChart yearlyAmortisationSchedule={formData.yearlyAmortisationSchedule} />
-            </section>
+                <p className="text-3xl font-bold mb-2">Year {inflectionRow.year}</p>
+                <p className="text-gray-600 mb-4">This is when you start paying off more of your actual home than padding the bank's profits each year.</p>
+
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <p className="text-sm text-gray-500">That year's interest</p>
+                    <p className="text-xl font-bold text-red-600">{formatCurrency(inflectionRow.interest)}</p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <p className="text-sm text-gray-500">That year's capital</p>
+                    <p className="text-xl font-bold text-green-600">{formatCurrency(inflectionRow.capital)}</p>
+                  </div>
+                </div>
+
+                <InflectionPointChart yearlyAmortisationSchedule={formData.yearlyAmortisationSchedule} />
+              </section>
+            )}
+
+            {milestoneRow && (
+              <section className="max-w-4xl mx-auto px-8 mt-10">
+                <h3 className="text-2xl font-bold">The Milestone</h3>
+                <p className="text-gray-600 mb-4">When total capital beats total interest</p>
+
+                <p className="text-3xl font-bold mb-2">Year {milestoneRow.year}</p>
+                <p className="text-gray-600 mb-4">The day you've paid more towards your home than to the bank in interest — total, since day one.</p>
+
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <p className="text-sm text-gray-500">Total interest paid</p>
+                    <p className="text-xl font-bold text-red-600">{formatCurrency(milestoneRow.cumulativeInterest)}</p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <p className="text-sm text-gray-500">Total capital paid</p>
+                    <p className="text-xl font-bold text-green-600">{formatCurrency(milestoneRow.cumulativeCapital)}</p>
+                  </div>
+                </div>
+
+                <MilestoneChart yearlyAmortisationSchedule={formData.yearlyAmortisationSchedule} />
+              </section>
+            )}
 
             <section className="max-w-4xl mx-auto px-8 mt-10">
               <h3 className="text-2xl font-bold mb-4">Year-by-Year Breakdown</h3>
