@@ -6,7 +6,7 @@ import { HomePage } from './pages/HomePage';
 function App() {
   return (
     <BrowserRouter>
-      <header>
+      <header className="border-b border-gray-200 pb-6 mb-8">
         <h1 className="text-2xl font-bold">Mortgage Snapshot</h1>
       </header>
 
@@ -14,7 +14,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
       </Routes>
 
-      <footer className="mt-32 text-center text-sm text-gray-400">
+      <footer className="mt-16 text-center text-sm text-gray-400">
         <hr className="border-gray-200 mb-4" />
         <p>Mortgage Snapshot © 2026 · Built for first-time buyers</p>
         <p className="mt-1">
@@ -33,3 +33,4 @@ function App() {
 }
 
 export default App;
+
