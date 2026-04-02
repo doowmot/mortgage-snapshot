@@ -2,12 +2,14 @@ import { useRef, useEffect } from "react";
 
 declare const Chart: any;
 
-export function MortgageBalanceChart({ yearlyAmortisationSchedule }) {
+export function MilestoneChart({ yearlyAmortisationSchedule }) {
 
     const chartRef = useRef(null);
 
     useEffect(() => {
-        if (yearlyAmortisationSchedule.length > 0 && chartRef.current) {
+        const yearlyData = yearlyAmortisationSchedule.filter((item) => item.year !== 0);
+
+        if (yearlyData.length > 0 && chartRef.current) {
           if (chartRef.current.chart) {
             chartRef.current.chart.destroy();
           }
@@ -16,31 +18,23 @@ export function MortgageBalanceChart({ yearlyAmortisationSchedule }) {
           const newChart = new Chart(ctx, {
             type: 'line',
             data: {
-              labels: yearlyAmortisationSchedule.map((item) => item.year),
+              labels: yearlyData.map((item) => item.year),
               datasets: [
                 {
-                  label: 'Balance Remaining',
-                  data: yearlyAmortisationSchedule.map((item) => item.balance),
-                  borderColor: 'rgb(59 130 246)',
-                  backgroundColor: 'rgb(59 130 246)', 
+                  label: 'Cumulative Interest Paid',
+                  data: yearlyData.map((item) => item.cumulativeInterest),
+                  borderColor: 'rgb(220, 38, 38)',
+                  backgroundColor: 'rgb(220, 38, 38)', 
                   borderWidth: 5,
                   radius: 0,
                 },
                 {
-                label: 'Cumulative Interest Paid',
-                data: yearlyAmortisationSchedule.map((item) => item.cumulativeInterest),
-                borderColor: 'rgb(74, 222, 128)',
-                backgroundColor: 'rgb(74, 222, 128)', 
-                borderWidth: 5,
-                radius: 0,
-                },
-                {
-                label: 'Cumulative Capital Paid',
-                data: yearlyAmortisationSchedule.map((item) => item.cumulativeCapital),
-                borderColor: 'rgb(30, 58, 138)',
-                backgroundColor: 'rgb(30, 58, 138)',
-                borderWidth: 5,
-                radius: 0,
+                  label: 'Cumulative Capital Paid',
+                  data: yearlyData.map((item) => item.cumulativeCapital),
+                  borderColor: 'rgb(22, 163, 74)',
+                  backgroundColor: 'rgb(22, 163, 74)',
+                  borderWidth: 5,
+                  radius: 0,
                 },
               ],
             },
@@ -70,7 +64,7 @@ export function MortgageBalanceChart({ yearlyAmortisationSchedule }) {
                 y: {
                   title: {
                     display: true,
-                    text: "£",
+                    text: "Cumulative Payment (£)",
                     color: 'rgb(0,0,0)',
                   },
                   ticks: {
