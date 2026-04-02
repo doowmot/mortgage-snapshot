@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { calculateMortgageResults } from "../utils/mortgageCalculations";
 import { MortgageTable } from "../components/MortgageTable";
+import { InflectionPointChart } from "../components/InflectionPointChart";
+import { MilestoneChart } from "../components/MilestoneChart";
 
 export function HomePage() {
   const [formData, setFormData] = useState({
@@ -83,19 +85,38 @@ export function HomePage() {
         </form>
       </div>
 
-      {formData.yearlyAmortisationSchedule.length > 0 &&
-        <div>
-          <MortgageTable yearlyAmortisationSchedule={formData.yearlyAmortisationSchedule} />
-        </div>
-      }
+      {formData.yearlyAmortisationSchedule.length > 0 && (() => {
+        const yearlyData = formData.yearlyAmortisationSchedule.filter((item) => item.year !== 0);
+        const inflectionYear = yearlyData.find((item) => item.capital > item.interest)?.year;
+        const milestoneYear = yearlyData.find((item) => item.cumulativeCapital > item.cumulativeInterest)?.year;
 
-      {/* TODO: Inflection Point section */}
-      {/* Line chart: Year vs Annual Payment (interest line + capital line) */}
-      {/* Display: "Your Inflection Point: Year X" */}
+        return (
+          <>
+            <section className="max-w-4xl mx-auto px-8 mt-10">
+              <h3 className="text-2xl font-bold mb-2">Inflection Point</h3>
+              <p className="mb-4">The year when your annual capital payments overtake your annual interest payments.</p>
+              {inflectionYear && (
+                <p className="text-xl font-semibold mb-4">Your Inflection Point: Year {inflectionYear}</p>
+              )}
+              <InflectionPointChart yearlyAmortisationSchedule={formData.yearlyAmortisationSchedule} />
+            </section>
 
-      {/* TODO: Milestone section */}
-      {/* Line chart: Year vs Cumulative Payment (interest line + capital line) */}
-      {/* Display: "Your Milestone: Year Y" */}
+            <section className="max-w-4xl mx-auto px-8 mt-10">
+              <h3 className="text-2xl font-bold mb-2">Milestone</h3>
+              <p className="mb-4">The year when the total capital you've paid exceeds the total interest you've paid.</p>
+              {milestoneYear && (
+                <p className="text-xl font-semibold mb-4">Your Milestone: Year {milestoneYear}</p>
+              )}
+              <MilestoneChart yearlyAmortisationSchedule={formData.yearlyAmortisationSchedule} />
+            </section>
+
+            <section className="max-w-4xl mx-auto px-8 mt-10">
+              <h3 className="text-2xl font-bold mb-2">Detailed Breakdown</h3>
+              <MortgageTable yearlyAmortisationSchedule={formData.yearlyAmortisationSchedule} />
+            </section>
+          </>
+        );
+      })()}
 
       {/* TODO: Overpayment Slider */}
       {/* Slider input for monthly overpayment amount */}
