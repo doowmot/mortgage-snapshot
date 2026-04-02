@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { calculateMortgageResults } from "../utils/mortgageCalculations";
 import { formatCurrency } from "../utils/format";
 import { MortgageTable } from "../components/MortgageTable";
@@ -7,10 +7,13 @@ import { InflectionPointChart } from "../components/InflectionPointChart";
 import { MilestoneChart } from "../components/MilestoneChart";
 
 export function HomePage() {
+  const resultsRef = useRef(null);
+
   const [formData, setFormData] = useState({
     borrowingAmount: "",
     interestRate: "",
     mortgageTerm: "",
+    monthlyPayment: 0,
     totalPayment: 0,
     totalInterest: 0,
     yearlyAmortisationSchedule: [],
@@ -32,17 +35,22 @@ export function HomePage() {
 
     setFormData(prevState => ({
       ...prevState,
+      monthlyPayment: results.monthlyPayment,
       totalPayment: results.totalPayment,
       totalInterest: results.totalInterest,
       yearlyAmortisationSchedule: results.yearlyAmortisationSchedule,
     }));
+
+    setTimeout(() => {
+      resultsRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
   }
 
   return (
     <>
-      <section className="py-14">
-        <h2 className="text-5xl font-bold px-50">When do you actually start owning your home?</h2>
-        <p className="text-1xl px-50 mt-4">Most people don't realise the bank gets paid first for years.</p>
+      <section className="py-14 max-w-3xl mx-auto text-center">
+        <h2 className="text-5xl font-bold">When do you actually start owning your home?</h2>
+        <p className="text-xl mt-4 text-gray-600">Most people don't realise the bank gets paid first for years.</p>
       </section>
 
       <div className="max-w-2xl mx-auto m-8">
@@ -55,7 +63,7 @@ export function HomePage() {
               name="borrowingAmount"
               value={formData.borrowingAmount}
               onChange={handleChange}
-              className="border rounded p-2 w-full"
+              className="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
             />
           </div>
 
@@ -68,7 +76,7 @@ export function HomePage() {
               step="0.01"
               value={formData.interestRate}
               onChange={handleChange}
-              className="border rounded p-2 w-full"
+              className="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
             />
           </div>
 
@@ -80,11 +88,11 @@ export function HomePage() {
               name="mortgageTerm"
               value={formData.mortgageTerm}
               onChange={handleChange}
-              className="border rounded p-2 w-full"
+              className="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
             />
           </div>
 
-          <button type="submit" className="bg-black text-white px-6 py-2 rounded">
+          <button type="submit" className="w-full bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition font-medium">
             Calculate
           </button>
         </form>
@@ -98,63 +106,84 @@ export function HomePage() {
 
         return (
           <>
-            <section className="max-w-4xl mx-auto px-8 mt-10">
-              <div className="bg-gray-50 rounded-lg p-6">
-                <h3 className="text-sm font-medium text-gray-500 mb-1">What you actually pay back</h3>
-                <p className="text-3xl font-bold mb-2">{formatCurrency(formData.totalPayment)}</p>
-                <p className="text-sm text-gray-600">
-                  {formatCurrency(Number(formData.borrowingAmount))} borrowed + {formatCurrency(formData.totalInterest)} in interest — for every £1 borrowed, you repay £{repaymentRatio}
-                </p>
+            {/* Summary cards: three columns */}
+            <section ref={resultsRef} className="max-w-6xl mx-auto px-8 mt-10">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                {/* Card 1: Total Cost */}
+                <div className="bg-gray-50 rounded-lg p-6 border border-gray-200 shadow-sm">
+                  <h3 className="text-sm font-medium text-gray-500 mb-1">What you actually pay back</h3>
+                  <p className="text-3xl font-bold mb-2">{formatCurrency(formData.totalPayment)}</p>
+                  <p className="text-sm text-gray-600 mb-4">This is what the bank earns from your mortgage over {formData.mortgageTerm} years.</p>
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <p className="text-sm text-gray-500">Monthly payment</p>
+                      <p className="text-sm font-bold">{formatCurrency(formData.monthlyPayment)}/mo</p>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <p className="text-sm text-gray-500">Borrowed</p>
+                      <p className="text-sm font-bold text-green-600">{formatCurrency(Number(formData.borrowingAmount))}</p>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <p className="text-sm text-gray-500">Interest</p>
+                      <p className="text-sm font-bold text-red-600">{formatCurrency(formData.totalInterest)}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Card 2: Inflection Point */}
+                {inflectionRow && (
+                  <div className="bg-gray-50 rounded-lg p-6 border border-gray-200 shadow-sm">
+                    <h3 className="text-sm font-medium text-gray-500 mb-1">The Inflection Point</h3>
+                    <p className="text-3xl font-bold mb-2">Year {inflectionRow.year}</p>
+                    <p className="text-sm text-gray-600 mb-4">Before this point, most of each payment is interest. After it, most goes to your loan.</p>
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <p className="text-sm text-gray-500">That year's interest</p>
+                        <p className="text-sm font-bold text-red-600">{formatCurrency(inflectionRow.interest)}</p>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <p className="text-sm text-gray-500">That year's capital</p>
+                        <p className="text-sm font-bold text-green-600">{formatCurrency(inflectionRow.capital)}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Card 3: Milestone */}
+                {milestoneRow && (
+                  <div className="bg-gray-50 rounded-lg p-6 border border-gray-200 shadow-sm">
+                    <h3 className="text-sm font-medium text-gray-500 mb-1">The Milestone</h3>
+                    <p className="text-3xl font-bold mb-2">Year {milestoneRow.year}</p>
+                    <p className="text-sm text-gray-600 mb-4">The cumulative crossover — total capital repaid finally overtakes total interest paid.</p>
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <p className="text-sm text-gray-500">Total interest paid</p>
+                        <p className="text-sm font-bold text-red-600">{formatCurrency(milestoneRow.cumulativeInterest)}</p>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <p className="text-sm text-gray-500">Total capital paid</p>
+                        <p className="text-sm font-bold text-green-600">{formatCurrency(milestoneRow.cumulativeCapital)}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
               </div>
             </section>
 
-            {inflectionRow && (
-              <section className="max-w-4xl mx-auto px-8 mt-10">
-                <h3 className="text-2xl font-bold">The Inflection Point</h3>
-                <p className="text-gray-600 mb-4">When annual capital beats annual interest</p>
+            {/* Charts section */}
+            <section className="max-w-6xl mx-auto px-8 mt-16 pt-16 border-t border-gray-200">
+              <p className="text-xs uppercase tracking-wide text-gray-400 mb-4">Annual Breakdown</p>
+              <InflectionPointChart yearlyAmortisationSchedule={formData.yearlyAmortisationSchedule} />
+            </section>
 
-                <p className="text-3xl font-bold mb-2">Year {inflectionRow.year}</p>
-                <p className="text-gray-600 mb-4">This is when you start paying off more of your actual home than padding the bank's profits each year.</p>
+            <section className="max-w-6xl mx-auto px-8 mt-12">
+              <p className="text-xs uppercase tracking-wide text-gray-400 mb-4">Cumulative Breakdown</p>
+              <MilestoneChart yearlyAmortisationSchedule={formData.yearlyAmortisationSchedule} />
+            </section>
 
-                <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <p className="text-sm text-gray-500">That year's interest</p>
-                    <p className="text-xl font-bold text-red-600">{formatCurrency(inflectionRow.interest)}</p>
-                  </div>
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <p className="text-sm text-gray-500">That year's capital</p>
-                    <p className="text-xl font-bold text-green-600">{formatCurrency(inflectionRow.capital)}</p>
-                  </div>
-                </div>
-
-                <InflectionPointChart yearlyAmortisationSchedule={formData.yearlyAmortisationSchedule} />
-              </section>
-            )}
-
-            {milestoneRow && (
-              <section className="max-w-4xl mx-auto px-8 mt-10">
-                <h3 className="text-2xl font-bold">The Milestone</h3>
-                <p className="text-gray-600 mb-4">When total capital beats total interest</p>
-
-                <p className="text-3xl font-bold mb-2">Year {milestoneRow.year}</p>
-                <p className="text-gray-600 mb-4">The day you've paid more towards your home than to the bank in interest — total, since day one.</p>
-
-                <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <p className="text-sm text-gray-500">Total interest paid</p>
-                    <p className="text-xl font-bold text-red-600">{formatCurrency(milestoneRow.cumulativeInterest)}</p>
-                  </div>
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <p className="text-sm text-gray-500">Total capital paid</p>
-                    <p className="text-xl font-bold text-green-600">{formatCurrency(milestoneRow.cumulativeCapital)}</p>
-                  </div>
-                </div>
-
-                <MilestoneChart yearlyAmortisationSchedule={formData.yearlyAmortisationSchedule} />
-              </section>
-            )}
-
-            <section className="max-w-4xl mx-auto px-8 mt-10">
+            <section className="max-w-6xl mx-auto px-8 mt-16 pt-16 border-t border-gray-200">
               <h3 className="text-2xl font-bold mb-4">Year-by-Year Breakdown</h3>
               <MortgageTable yearlyAmortisationSchedule={formData.yearlyAmortisationSchedule} />
             </section>
