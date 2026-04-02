@@ -111,7 +111,7 @@ export function HomePage() {
             </section>
 
             <section className="max-w-4xl mx-auto px-8 mt-10">
-              <h3 className="text-2xl font-bold mb-2">Detailed Breakdown</h3>
+              <h3 className="text-2xl font-bold mb-2">Year-by-Year Breakdown</h3>
               <MortgageTable yearlyAmortisationSchedule={formData.yearlyAmortisationSchedule} />
             </section>
           </>
