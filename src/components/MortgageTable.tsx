@@ -13,7 +13,7 @@ export function MortgageTable(props) {
               <th className="border-2 border-black p-3 font-semibold text-center w-1/6">Interest</th>
               <th className="border-2 border-black p-3 font-semibold text-center w-1/6">Capital</th>
               <th className="border-2 border-black p-3 font-semibold text-center w-1/6">Balance</th>
-              <th className="border-2 border-black border-l-4 border-l-white p-3 font-semibold text-center w-1/6">Total Interest</th>
+              <th className="border-2 border-black p-3 font-semibold text-center w-1/6">Total Interest</th>
               <th className="border-2 border-black p-3 font-semibold text-center w-1/6">Total Capital</th>
             </tr>
             {props.yearlyAmortisationSchedule
@@ -29,19 +29,13 @@ export function MortgageTable(props) {
                 if (isInflection) rowClassName = "bg-yellow-200";
                 if (isMilestone) rowClassName = "bg-blue-200";
 
-                const yearLabel = isInflection
-                  ? `${item.year} (Inflection)`
-                  : isMilestone
-                  ? `${item.year} (Milestone)`
-                  : item.year;
-
                 return (
                   <tr key={item.year} className={rowClassName}>
-                    <td className="border-2 border-black p-3 text-center font-medium">{yearLabel}</td>
+                    <td className="border-2 border-black p-3 text-center">{item.year}</td>
                     <td className="border-2 border-black p-3 text-center text-red-600">{formatCurrency(item.interest)}</td>
                     <td className="border-2 border-black p-3 text-center text-green-600">{formatCurrency(item.capital)}</td>
                     <td className="border-2 border-black p-3 text-center">{formatCurrency(item.balance)}</td>
-                    <td className="border-2 border-black border-l-4 border-l-gray-400 p-3 text-center text-red-600">{formatCurrency(item.cumulativeInterest)}</td>
+                    <td className="border-2 border-black p-3 text-center text-red-600">{formatCurrency(item.cumulativeInterest)}</td>
                     <td className="border-2 border-black p-3 text-center text-green-600">{formatCurrency(item.cumulativeCapital)}</td>
                   </tr>
                 );

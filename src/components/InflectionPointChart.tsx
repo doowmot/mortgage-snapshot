@@ -20,7 +20,7 @@ export function InflectionPointChart({ yearlyAmortisationSchedule }) {
           const newChart = new Chart(ctx, {
             type: 'line',
             data: {
-              labels: yearlyData.map((item) => item.year),
+              labels: yearlyData.map((item) => String(item.year)),
               datasets: [
                 {
                   label: 'Annual Interest',
@@ -52,7 +52,7 @@ export function InflectionPointChart({ yearlyAmortisationSchedule }) {
                     inflectionLine: {
                       type: 'line',
                       scaleID: 'x',
-                      value: inflectionYear,
+                      value: String(inflectionYear),
                       borderColor: 'rgba(0, 0, 0, 0.6)',
                       borderWidth: 2,
                       borderDash: [6, 6],

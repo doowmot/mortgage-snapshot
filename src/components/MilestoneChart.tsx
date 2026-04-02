@@ -20,7 +20,7 @@ export function MilestoneChart({ yearlyAmortisationSchedule }) {
           const newChart = new Chart(ctx, {
             type: 'line',
             data: {
-              labels: yearlyData.map((item) => item.year),
+              labels: yearlyData.map((item) => String(item.year)),
               datasets: [
                 {
                   label: 'Cumulative Interest Paid',
@@ -52,7 +52,7 @@ export function MilestoneChart({ yearlyAmortisationSchedule }) {
                     milestoneLine: {
                       type: 'line',
                       scaleID: 'x',
-                      value: milestoneYear,
+                      value: String(milestoneYear),
                       borderColor: 'rgba(0, 0, 0, 0.6)',
                       borderWidth: 2,
                       borderDash: [6, 6],
