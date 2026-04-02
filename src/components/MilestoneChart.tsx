@@ -41,6 +41,8 @@ export function MilestoneChart({ yearlyAmortisationSchedule }) {
               ],
             },
             options: {
+              responsive: true,
+              maintainAspectRatio: true,
               plugins: {
                 legend: {
                   labels: {
@@ -110,7 +112,9 @@ export function MilestoneChart({ yearlyAmortisationSchedule }) {
       }, [yearlyAmortisationSchedule]);
 
   return (
-    <canvas ref={chartRef} width="400" height="200"></canvas>
+    <div className="relative w-full">
+      <canvas ref={chartRef}></canvas>
+    </div>
 );
 }
 
