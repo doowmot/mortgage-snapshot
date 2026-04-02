@@ -99,30 +99,12 @@ export function HomePage() {
         return (
           <>
             <section className="max-w-4xl mx-auto px-8 mt-10">
-              <div className="grid grid-cols-3 gap-6">
-                <div className="bg-gray-50 rounded-lg p-6">
-                  <h3 className="text-sm font-medium text-gray-500 mb-1">What you actually pay back</h3>
-                  <p className="text-3xl font-bold mb-2">{formatCurrency(formData.totalPayment)}</p>
-                  <p className="text-sm text-gray-600">
-                    {formatCurrency(Number(formData.borrowingAmount))} borrowed + {formatCurrency(formData.totalInterest)} in interest — for every £1 borrowed, you repay £{repaymentRatio}
-                  </p>
-                </div>
-
-                {inflectionRow && (
-                  <div className="bg-gray-50 rounded-lg p-6">
-                    <h3 className="text-sm font-medium text-gray-500 mb-1">Inflection point</h3>
-                    <p className="text-3xl font-bold mb-2">Year {inflectionRow.year}</p>
-                    <p className="text-sm text-gray-600">Capital payment first exceeds interest</p>
-                  </div>
-                )}
-
-                {milestoneRow && (
-                  <div className="bg-gray-50 rounded-lg p-6">
-                    <h3 className="text-sm font-medium text-gray-500 mb-1">Cumulative crossover</h3>
-                    <p className="text-3xl font-bold mb-2">Year {milestoneRow.year}</p>
-                    <p className="text-sm text-gray-600">You've paid more capital than interest total</p>
-                  </div>
-                )}
+              <div className="bg-gray-50 rounded-lg p-6">
+                <h3 className="text-sm font-medium text-gray-500 mb-1">What you actually pay back</h3>
+                <p className="text-3xl font-bold mb-2">{formatCurrency(formData.totalPayment)}</p>
+                <p className="text-sm text-gray-600">
+                  {formatCurrency(Number(formData.borrowingAmount))} borrowed + {formatCurrency(formData.totalInterest)} in interest — for every £1 borrowed, you repay £{repaymentRatio}
+                </p>
               </div>
             </section>
 
