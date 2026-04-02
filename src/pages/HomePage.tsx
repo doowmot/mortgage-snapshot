@@ -175,12 +175,16 @@ export function HomePage() {
             {/* Charts section */}
             <section className="max-w-6xl mx-auto px-8 mt-16 pt-16 border-t border-gray-200">
               <p className="text-xs uppercase tracking-wide text-gray-400 mb-4">Annual Breakdown</p>
-              <InflectionPointChart yearlyAmortisationSchedule={formData.yearlyAmortisationSchedule} />
+              <div className="bg-gray-50 rounded-lg p-6 border border-gray-200 shadow-sm">
+                <InflectionPointChart yearlyAmortisationSchedule={formData.yearlyAmortisationSchedule} />
+              </div>
             </section>
 
             <section className="max-w-6xl mx-auto px-8 mt-12">
               <p className="text-xs uppercase tracking-wide text-gray-400 mb-4">Cumulative Breakdown</p>
-              <MilestoneChart yearlyAmortisationSchedule={formData.yearlyAmortisationSchedule} />
+              <div className="bg-gray-50 rounded-lg p-6 border border-gray-200 shadow-sm">
+                <MilestoneChart yearlyAmortisationSchedule={formData.yearlyAmortisationSchedule} />
+              </div>
             </section>
 
             <section className="max-w-6xl mx-auto px-8 mt-16 pt-16 border-t border-gray-200">

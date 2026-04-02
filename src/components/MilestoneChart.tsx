@@ -1,4 +1,5 @@
 import { useRef, useEffect } from "react";
+import { formatCurrency } from "../utils/format";
 
 declare const Chart: any;
 
@@ -13,6 +14,9 @@ export function MilestoneChart({ yearlyAmortisationSchedule }) {
           if (chartRef.current.chart) {
             chartRef.current.chart.destroy();
           }
+
+          // Set Chart.js default font to match the page
+          Chart.defaults.font.family = "'Inter', system-ui, -apple-system, sans-serif";
           
           const milestoneYear = yearlyData.find((item) => item.cumulativeCapital > item.cumulativeInterest)?.year;
 
@@ -26,27 +30,41 @@ export function MilestoneChart({ yearlyAmortisationSchedule }) {
                   label: 'Cumulative Interest Paid',
                   data: yearlyData.map((item) => item.cumulativeInterest),
                   borderColor: 'rgb(220, 38, 38)',
-                  backgroundColor: 'rgb(220, 38, 38)', 
-                  borderWidth: 5,
+                  backgroundColor: 'rgba(220, 38, 38, 0.1)',
+                  borderWidth: 2,
                   radius: 0,
+                  fill: true,
+                  pointStyle: 'circle',
                 },
                 {
                   label: 'Cumulative Capital Paid',
                   data: yearlyData.map((item) => item.cumulativeCapital),
                   borderColor: 'rgb(22, 163, 74)',
-                  backgroundColor: 'rgb(22, 163, 74)',
-                  borderWidth: 5,
+                  backgroundColor: 'rgba(22, 163, 74, 0.1)',
+                  borderWidth: 2,
                   radius: 0,
+                  fill: true,
+                  pointStyle: 'circle',
                 },
               ],
             },
             options: {
               responsive: true,
-              maintainAspectRatio: true,
+              aspectRatio: 1.5,
               plugins: {
                 legend: {
                   labels: {
                     color: 'rgb(0,0,0)',
+                    usePointStyle: true,
+                    pointStyle: 'circle',
+                    padding: 20,
+                  }
+                },
+                tooltip: {
+                  callbacks: {
+                    label: function(context) {
+                      return `${context.dataset.label}: ${formatCurrency(context.raw)}`;
+                    }
                   }
                 },
                 annotation: milestoneYear ? {
@@ -97,6 +115,9 @@ export function MilestoneChart({ yearlyAmortisationSchedule }) {
                   },
                   ticks: {
                     color: 'rgb(0,0,0)',
+                    callback: function(value) {
+                      return formatCurrency(value);
+                    }
                   },
                   grid: {
                     display: true,
