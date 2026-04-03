@@ -13,11 +13,17 @@ export function HomePage() {
     borrowingAmount: "",
     interestRate: "",
     mortgageTerm: "",
-    monthlyPayment: 0,
-    totalPayment: 0,
-    totalInterest: 0,
-    yearlyAmortisationSchedule: [],
   });
+
+  const [hasSubmitted, setHasSubmitted] = useState(false);
+
+  const results = hasSubmitted 
+    ? calculateMortgageResults(
+        formData.borrowingAmount,
+        formData.interestRate,
+        formData.mortgageTerm
+      )
+    : null;
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -26,20 +32,7 @@ export function HomePage() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    const results = calculateMortgageResults(
-      formData.borrowingAmount,
-      formData.interestRate,
-      formData.mortgageTerm
-    );
-
-    setFormData(prevState => ({
-      ...prevState,
-      monthlyPayment: results.monthlyPayment,
-      totalPayment: results.totalPayment,
-      totalInterest: results.totalInterest,
-      yearlyAmortisationSchedule: results.yearlyAmortisationSchedule,
-    }));
+    setHasSubmitted(true);
 
     setTimeout(() => {
       resultsRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -98,11 +91,11 @@ export function HomePage() {
         </form>
       </div>
 
-      {formData.yearlyAmortisationSchedule.length > 0 && (() => {
-        const yearlyData = formData.yearlyAmortisationSchedule.filter((item) => item.year !== 0);
+      {results && (() => {
+        const yearlyData = results.yearlyAmortisationSchedule.filter((item) => item.year !== 0);
         const inflectionRow = yearlyData.find((item) => item.capital > item.interest);
         const milestoneRow = yearlyData.find((item) => item.cumulativeCapital > item.cumulativeInterest);
-        const repaymentRatio = (formData.totalPayment / Number(formData.borrowingAmount)).toFixed(2);
+        const repaymentRatio = (results.totalPayment / Number(formData.borrowingAmount)).toFixed(2);
 
         return (
           <>
@@ -113,12 +106,12 @@ export function HomePage() {
                 {/* Card 1: Total Cost */}
                 <div className="bg-gray-50 rounded-lg p-6 border border-gray-200 shadow-sm">
                   <h3 className="text-sm font-medium text-gray-500 mb-1">What you actually pay back</h3>
-                  <p className="text-3xl font-bold mb-2">{formatCurrency(formData.totalPayment)}</p>
+                  <p className="text-3xl font-bold mb-2">{formatCurrency(results.totalPayment)}</p>
                   <p className="text-sm text-gray-600 mb-4">This is what the bank earns from your mortgage over {formData.mortgageTerm} years.</p>
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
                       <p className="text-sm text-gray-500">Monthly payment</p>
-                      <p className="text-sm font-bold">{formatCurrency(formData.monthlyPayment)}/mo</p>
+                      <p className="text-sm font-bold">{formatCurrency(results.monthlyPayment)}/mo</p>
                     </div>
                     <div className="flex justify-between items-center">
                       <p className="text-sm text-gray-500">Borrowed</p>
@@ -126,7 +119,7 @@ export function HomePage() {
                     </div>
                     <div className="flex justify-between items-center">
                       <p className="text-sm text-gray-500">Interest</p>
-                      <p className="text-sm font-bold text-red-600">{formatCurrency(formData.totalInterest)}</p>
+                      <p className="text-sm font-bold text-red-600">{formatCurrency(results.totalInterest)}</p>
                     </div>
                   </div>
                 </div>
@@ -176,20 +169,20 @@ export function HomePage() {
             <section className="max-w-6xl mx-auto px-8 mt-16 pt-16 border-t border-gray-200">
               <p className="text-xs uppercase tracking-wide text-gray-400 mb-4">Annual Breakdown</p>
               <div className="bg-gray-50 rounded-lg p-6 border border-gray-200 shadow-sm">
-                <InflectionPointChart yearlyAmortisationSchedule={formData.yearlyAmortisationSchedule} />
+                <InflectionPointChart yearlyAmortisationSchedule={results.yearlyAmortisationSchedule} />
               </div>
             </section>
 
             <section className="max-w-6xl mx-auto px-8 mt-12">
               <p className="text-xs uppercase tracking-wide text-gray-400 mb-4">Cumulative Breakdown</p>
               <div className="bg-gray-50 rounded-lg p-6 border border-gray-200 shadow-sm">
-                <MilestoneChart yearlyAmortisationSchedule={formData.yearlyAmortisationSchedule} />
+                <MilestoneChart yearlyAmortisationSchedule={results.yearlyAmortisationSchedule} />
               </div>
             </section>
 
             <section className="max-w-6xl mx-auto px-8 mt-16 pt-16 border-t border-gray-200">
               <h3 className="text-2xl font-bold mb-4">Year-by-Year Breakdown</h3>
-              <MortgageTable yearlyAmortisationSchedule={formData.yearlyAmortisationSchedule} />
+              <MortgageTable yearlyAmortisationSchedule={results.yearlyAmortisationSchedule} />
             </section>
           </>
         );
