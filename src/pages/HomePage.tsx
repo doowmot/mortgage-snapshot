@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useState, useRef } from "react";
 import { calculateMortgageResults } from "../utils/mortgageCalculations";
 import { formatCurrency } from "../utils/format";
@@ -6,10 +5,19 @@ import { MortgageTable } from "../components/MortgageTable";
 import { InflectionPointChart } from "../components/InflectionPointChart";
 import { MilestoneChart } from "../components/MilestoneChart";
 
+
+// Form inputs are stored as strings to keep fields empty on page load
+// Numbers are converted when passed as arguments to calculateMortgageResults()
+interface MortgageFormData {
+  borrowingAmount: string;
+  interestRate: string;
+  mortgageTerm: string;
+}
+
 export function HomePage() {
   const resultsRef = useRef(null);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<MortgageFormData>({
     borrowingAmount: "",
     interestRate: "",
     mortgageTerm: "",
@@ -17,20 +25,21 @@ export function HomePage() {
 
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
-  const results = hasSubmitted 
-    ? calculateMortgageResults(
-        formData.borrowingAmount,
-        formData.interestRate,
-        formData.mortgageTerm
-      )
-    : null;
+  let results = null;
+  if (hasSubmitted) {
+    results = calculateMortgageResults(
+      Number(formData.borrowingAmount),
+      Number(formData.interestRate),
+      Number(formData.mortgageTerm)
+    );
+  }
 
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormData((prevState) => ({ ...prevState, [name]: value }));
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setHasSubmitted(true);
 
@@ -66,7 +75,7 @@ export function HomePage() {
               type="number"
               id="interestRate"
               name="interestRate"
-              step="0.01"
+              step="0.1"
               value={formData.interestRate}
               onChange={handleChange}
               className="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
@@ -95,7 +104,7 @@ export function HomePage() {
         const yearlyData = results.yearlyAmortisationSchedule.filter((item) => item.year !== 0);
         const inflectionRow = yearlyData.find((item) => item.capital > item.interest);
         const milestoneRow = yearlyData.find((item) => item.cumulativeCapital > item.cumulativeInterest);
-        const repaymentRatio = (results.totalPayment / Number(formData.borrowingAmount)).toFixed(2);
+        // const repaymentRatio = (results.totalPayment / Number(formData.borrowingAmount)).toFixed(2);
 
         return (
           <>
@@ -188,9 +197,6 @@ export function HomePage() {
         );
       })()}
 
-      {/* TODO: Overpayment Slider */}
-      {/* Slider input for monthly overpayment amount */}
-      {/* Dynamically updates both charts and displayed years */}
     </>
   )
 }
