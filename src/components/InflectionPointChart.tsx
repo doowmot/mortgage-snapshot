@@ -1,26 +1,31 @@
 import { useRef, useEffect } from "react";
 import { formatCurrency } from "../utils/format";
+import type { AmortisationRow } from "../utils/mortgageCalculations";
+
+interface InflectionPointChartProps {
+  yearlyAmortisationSchedule: AmortisationRow[];
+}
 
 declare const Chart: any;
 
-export function InflectionPointChart({ yearlyAmortisationSchedule }) {
+export function InflectionPointChart({ yearlyAmortisationSchedule }: InflectionPointChartProps) {
 
-    const chartRef = useRef(null);
+    const canvasRef = useRef<HTMLCanvasElement | null>(null);
+    const chartInstanceRef = useRef<any>(null);
 
     useEffect(() => {
         const yearlyData = yearlyAmortisationSchedule.filter((item) => item.year !== 0);
 
-        if (yearlyData.length > 0 && chartRef.current) {
-          if (chartRef.current.chart) {
-            chartRef.current.chart.destroy();
+        if (yearlyData.length > 0 && canvasRef.current) {
+          if (chartInstanceRef.current) {
+            chartInstanceRef.current.destroy();
           }
 
-          // Set Chart.js default font to match the page
           Chart.defaults.font.family = "'Inter', system-ui, -apple-system, sans-serif";
           
           const inflectionYear = yearlyData.find((item) => item.capital > item.interest)?.year;
 
-          const ctx = chartRef.current.getContext('2d');
+          const ctx = canvasRef.current.getContext('2d');
           const newChart = new Chart(ctx, {
             type: 'line',
             data: {
@@ -62,7 +67,7 @@ export function InflectionPointChart({ yearlyAmortisationSchedule }) {
                 },
                 tooltip: {
                   callbacks: {
-                    label: function(context) {
+                    label: function(context: any) {
                       return `${context.dataset.label}: ${formatCurrency(context.raw)}`;
                     }
                   }
@@ -115,7 +120,7 @@ export function InflectionPointChart({ yearlyAmortisationSchedule }) {
                   },
                   ticks: {
                     color: 'rgb(0,0,0)',
-                    callback: function(value) {
+                    callback: function(value: any) {
                       return formatCurrency(value);
                     }
                   },
@@ -128,13 +133,13 @@ export function InflectionPointChart({ yearlyAmortisationSchedule }) {
             }
           });
           
-          chartRef.current.chart = newChart;
+          chartInstanceRef.current = newChart;
         }
       }, [yearlyAmortisationSchedule]);
 
   return (
     <div className="relative w-full">
-      <canvas ref={chartRef}></canvas>
+      <canvas ref={canvasRef}></canvas>
     </div>
 );
 }

@@ -15,7 +15,7 @@ interface MortgageFormData {
 }
 
 export function HomePage() {
-  const resultsRef = useRef(null);
+  const resultsRef = useRef<HTMLDivElement | null>(null);
 
   const [formData, setFormData] = useState<MortgageFormData>({
     borrowingAmount: "",

@@ -1,6 +1,11 @@
 import { formatCurrency } from "../utils/format";
+import type { AmortisationRow } from "../utils/mortgageCalculations";
 
-export function MortgageTable(props) {
+interface MortgageTableProps {
+  yearlyAmortisationSchedule: AmortisationRow[];
+}
+
+export function MortgageTable(props: MortgageTableProps) {
     let inflectionFound = false;
     let milestoneFound = false;
 
