@@ -4,34 +4,36 @@ As a mortgage advisor, I witnessed how first-time buyers often struggle to under
 
 ## Tech Stack
 
-- **Frontend**: React, JavaScript, Tailwind CSS 
+- **Frontend**: React 19, TypeScript, Tailwind CSS 4
 - **Charts**: Chart.js 
 - **Testing**: Jest 
-- **Build**: Vite
+- **Build**: Vite 7
 
 ## Key Features
 
-- **Affordability Calculator:** Based on income multiples
-- **Monthly Payment Calculator:** Calculate accurate monthly mortgage payments with support for different interest rates and mortgage terms
-- **Visual charts** showing how interest vs. capital payments change over time 
-- **Amortisation Schedule**: Year-by-year breakdown of payments and remaining balance
-- **Stress Testing**: See how payments would change with a 3% interest rate increase
+- **The Inflection Point**: Visualize the year when your annual capital payments finally exceed annual interest payments - the turning point where you start paying down your loan faster than paying the bank
+- **The Milestone**: Discover when your cumulative capital repaid overtakes total interest paid - the moment you've paid yourself more than the bank
+- **Interactive Charts**: Annual and cumulative breakdowns showing the exact split between interest and capital over your mortgage term
+- **Amortisation Schedule**: Year-by-year table of payments, remaining balance, and running totals
+- **Input Validation**: Real-time error handling prevents invalid entries (negative values, unrealistic rates, excessive terms)
 
 ## Testing Strategy
 
-- **37 unit tests** with 100% coverage on business logic
-- **Edge case validation** (negative values, boundary conditions)
+- **30 unit tests** with 97% coverage on business logic
+- **Edge case validation** (negative values, boundary conditions, upper limits)
 - **Separation of concerns** - all calculations isolated and testable
-- **Input validation** with user-friendly error handling
+- **Type safety** - TypeScript strict mode enabled throughout
 
 ## Project Structure
 
 ```
 src/
 ├── components/          # Reusable React components
-│   ├── AffordabilityForm.tsx
-│   ├── CostsForm.tsx
+│   ├── InflectionPointChart.tsx
+│   ├── MilestoneChart.tsx
 │   └── MortgageTable.tsx
+├── pages/              # Page components
+│   └── HomePage.tsx
 ├── utils/              # Business logic and utilities
 │   ├── mortgageCalculations.ts
 │   ├── validation.ts
@@ -40,17 +42,8 @@ src/
 │   ├── mortgageCalculations.test.ts
 │   ├── validation.test.ts
 │   └── format.test.ts
-└── App.tsx             # Main application component
+└── App.tsx             # Router and app shell
 ```
-
-## Future Improvements
-
-- **TypeScript migration**: Add strict typing for improved maintainability
-- **Component testing**: React Testing Library integration for UI testing
-- **State management**: Implement Redux/Context for complex state scenarios
-- **Data persistence**: Save calculations for comparison and analysis
-- **API integration**: Connect to real-time interest rate feeds
-
 
 ## Live Deployment
 
@@ -58,17 +51,11 @@ src/
 - **Hosting**: Vercel with custom domain
 - **Status**: Production-ready with automated deployments
 
-## Development Notes
-
-- **Build System**: Vite configured for TypeScript support
-- **Current Implementation**: JavaScript with plans for TypeScript migration
-- **Rationale**: Rapid prototyping in JavaScript, with TypeScript conversion planned for production enhancement
-
 ## Installation
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/mortgage-snapshot.git
+git clone https://github.com/doowmot/mortgage-snapshot.git
 
 # Install dependencies
 npm install
