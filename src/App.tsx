@@ -5,7 +5,7 @@ import { HomePage } from './pages/HomePage';
 function App() {
   return (
     <BrowserRouter>
-      <header className="border-b border-gray-200 pb-6 mb-8">
+      <header className="border-b border-gray-200 pb-6 mb-8 px-4 md:px-8">
         <h1 className="text-2xl font-bold">Mortgage Snapshot</h1>
       </header>
 

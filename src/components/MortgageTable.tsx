@@ -11,15 +11,15 @@ export function MortgageTable(props: MortgageTableProps) {
 
     return (
       <div className="overflow-x-auto">
-        <table className="w-full table-fixed border border-gray-200 rounded-lg text-sm">
+        <table className="w-full border border-gray-200 rounded-lg text-sm">
           <thead>
             <tr className="bg-gray-100 text-gray-600">
-              <th className="border-b border-gray-200 p-3 font-medium text-center w-1/6">Year</th>
-              <th className="border-b border-gray-200 p-3 font-medium text-center w-1/6">Interest</th>
-              <th className="border-b border-gray-200 p-3 font-medium text-center w-1/6">Capital</th>
-              <th className="border-b border-gray-200 p-3 font-medium text-center w-1/6">Balance</th>
-              <th className="border-b border-gray-200 p-3 font-medium text-center w-1/6">Total Interest</th>
-              <th className="border-b border-gray-200 p-3 font-medium text-center w-1/6">Total Capital</th>
+              <th className="border-b border-gray-200 p-3 font-medium text-center whitespace-nowrap">Year</th>
+              <th className="border-b border-gray-200 p-3 font-medium text-center whitespace-nowrap">Interest</th>
+              <th className="border-b border-gray-200 p-3 font-medium text-center whitespace-nowrap">Capital</th>
+              <th className="border-b border-gray-200 p-3 font-medium text-center whitespace-nowrap">Balance</th>
+              <th className="border-b border-gray-200 p-3 font-medium text-center whitespace-nowrap">Total Interest</th>
+              <th className="border-b border-gray-200 p-3 font-medium text-center whitespace-nowrap">Total Capital</th>
             </tr>
           </thead>
           <tbody>

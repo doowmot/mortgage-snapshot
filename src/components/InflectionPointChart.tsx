@@ -55,7 +55,7 @@ export function InflectionPointChart({ yearlyAmortisationSchedule }: InflectionP
             },
             options: {
               responsive: true,
-              aspectRatio: 1.5,
+              maintainAspectRatio: false,
               plugins: {
                 legend: {
                   labels: {
@@ -138,7 +138,7 @@ export function InflectionPointChart({ yearlyAmortisationSchedule }: InflectionP
       }, [yearlyAmortisationSchedule]);
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full h-64 md:h-96">
       <canvas ref={canvasRef}></canvas>
     </div>
 );

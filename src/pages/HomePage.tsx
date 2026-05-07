@@ -67,12 +67,12 @@ export function HomePage() {
 
   return (
     <>
-      <section className="py-14 max-w-3xl mx-auto text-center">
-        <h2 className="text-5xl font-bold">When do you actually start owning your home?</h2>
-        <p className="text-xl mt-4 text-gray-600">Most people don't realise the bank gets paid first for years.</p>
+      <section className="py-14 max-w-3xl mx-auto text-center px-4">
+        <h2 className="text-3xl md:text-5xl font-bold">When do you actually start owning your home?</h2>
+        <p className="text-lg md:text-xl mt-4 text-gray-600">Most people don't realise the bank gets paid first for years.</p>
       </section>
 
-      <div className="max-w-2xl mx-auto m-8">
+      <div className="max-w-2xl mx-auto my-4 md:my-8 px-4">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="borrowingAmount" className="block font-medium">Borrowing Amount (&pound;)</label>
@@ -135,7 +135,7 @@ export function HomePage() {
         return (
           <>
             {/* Summary cards: three columns */}
-            <section ref={resultsRef} className="max-w-6xl mx-auto px-8 mt-10">
+            <section ref={resultsRef} className="max-w-6xl mx-auto px-4 md:px-8 mt-10">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
                 {/* Card 1: Total Cost */}
@@ -201,21 +201,21 @@ export function HomePage() {
             </section>
 
             {/* Charts section */}
-            <section className="max-w-6xl mx-auto px-8 mt-16 pt-16 border-t border-gray-200">
+            <section className="max-w-6xl mx-auto px-4 md:px-8 mt-16 pt-16 border-t border-gray-200">
               <p className="text-xs uppercase tracking-wide text-gray-400 mb-4">Annual Breakdown</p>
               <div className="bg-gray-50 rounded-lg p-6 border border-gray-200 shadow-sm">
                 <InflectionPointChart yearlyAmortisationSchedule={results.yearlyAmortisationSchedule} />
               </div>
             </section>
 
-            <section className="max-w-6xl mx-auto px-8 mt-12">
+            <section className="max-w-6xl mx-auto px-4 md:px-8 mt-12">
               <p className="text-xs uppercase tracking-wide text-gray-400 mb-4">Cumulative Breakdown</p>
               <div className="bg-gray-50 rounded-lg p-6 border border-gray-200 shadow-sm">
                 <MilestoneChart yearlyAmortisationSchedule={results.yearlyAmortisationSchedule} />
               </div>
             </section>
 
-            <section className="max-w-6xl mx-auto px-8 mt-16 pt-16 border-t border-gray-200">
+            <section className="max-w-6xl mx-auto px-4 md:px-8 mt-16 pt-16 border-t border-gray-200">
               <h3 className="text-2xl font-bold mb-4">Year-by-Year Breakdown</h3>
               <MortgageTable yearlyAmortisationSchedule={results.yearlyAmortisationSchedule} />
             </section>
