@@ -1,101 +1,136 @@
 import {
-    validateDeposit,
-    validateIncome,
-    validatePropertyPrice,
+    // validateDeposit,
+    // validateIncome,
+    // validatePropertyPrice,
+    validateBorrowingAmount,
     validateInterestRate,
     validateMortgageTerm
 } from '../utils/validation';
 
-describe('validateDeposit', () => {
+// describe('validateDeposit', () => {
 
-    test("should return error message when deposit is non-int", () => {
-        const deposit = "e";
-        const result = validateDeposit(deposit);
-        expect(result).toBe("Error: Please enter a number for the deposit");
+//     test("should return error message when deposit is non-int", () => {
+//         const deposit = "e";
+//         const result = validateDeposit(deposit);
+//         expect(result).toBe("Error: Please enter a number for the deposit");
+//     });
+
+//     test("should return error message when deposit is negative", () => {
+//         const deposit = -5000;
+//         const result = validateDeposit(deposit);
+//         expect(result).toBe("Error: Please ensure the deposit is greater than 0");
+//     });
+
+//     test("should return error message when deposit is zero", () => {
+//         const deposit = 0;
+//         const result = validateDeposit(deposit);
+//         expect(result).toBe("Error: Please ensure the deposit is greater than 0");
+//     });
+
+//     test("should return null when deposit is valid", () => {
+//         const deposit = 25000;
+//         const result = validateDeposit(deposit);
+//         expect(result).toBe(null);
+//     });
+
+// });
+
+// describe('validateIncome', () => {
+
+//     test("should return error message when income is non-int", () => {
+//         const income = "abc";
+//         const result = validateIncome(income);
+//         expect(result).toBe("Error: Please enter a number for the income");
+//     });
+
+//     test("should return error message when income is negative", () => {
+//         const income = -50000;
+//         const result = validateIncome(income);
+//         expect(result).toBe("Error: Please ensure income is greater than 0");
+//     });
+
+//     test("should return error message when income is zero", () => {
+//         const income = 0;
+//         const result = validateIncome(income);
+//         expect(result).toBe("Error: Please ensure income is greater than 0");
+//     });
+
+//     test("should return null when income is valid", () => {
+//         const income = 50000;
+//         const result = validateIncome(income);
+//         expect(result).toBe(null);
+//     });
+
+// });
+
+// describe('validatePropertyPrice', () => {
+
+//     test("should return error message when property price is non-int", () => {
+//         const deposit = 50000;
+//         const propertyPrice = "xyz";
+//         const result = validatePropertyPrice(deposit, propertyPrice);
+//         expect(result).toBe("Error: Please enter a number for the house price");
+//     });
+
+//     test("should return error message when property price is negative", () => {
+//         const deposit = 50000;
+//         const propertyPrice = -250000;
+//         const result = validatePropertyPrice(deposit, propertyPrice);
+//         expect(result).toBe("Error: Please ensure property price is greater than 0");
+//     });
+
+//     test("should return error message when property price is zero", () => {
+//         const deposit = 50000;
+//         const propertyPrice = 0;
+//         const result = validatePropertyPrice(deposit, propertyPrice);
+//         expect(result).toBe("Error: Please ensure property price is greater than 0");
+//     });
+
+//     test("should return error message when property price is less than deposit", () => {
+//         const deposit = 50000;
+//         const propertyPrice = 30000;
+//         const result = validatePropertyPrice(deposit, propertyPrice);
+//         expect(result).toBe("Error: Please ensure property price is greater than the deposit");
+//     });
+
+//     test("should return null when property price is valid", () => {
+//         const deposit = 50000;
+//         const propertyPrice = 250000;
+//         const result = validatePropertyPrice(deposit, propertyPrice);
+//         expect(result).toBe(null);
+//     });
+
+// });
+
+describe('validateBorrowingAmount', () => {
+
+    test("should return error message when borrowing amount is non-numeric", () => {
+        const borrowingAmount = "abc";
+        const result = validateBorrowingAmount(borrowingAmount);
+        expect(result).toBe("Error: Please enter a number for the borrowing amount");
     });
 
-    test("should return error message when deposit is negative", () => {
-        const deposit = -5000;
-        const result = validateDeposit(deposit);
-        expect(result).toBe("Error: Please ensure the deposit is greater than 0");
+    test("should return error message when borrowing amount is negative", () => {
+        const borrowingAmount = -100000;
+        const result = validateBorrowingAmount(borrowingAmount);
+        expect(result).toBe("Error: Please ensure borrowing amount is greater than 0");
     });
 
-    test("should return error message when deposit is zero", () => {
-        const deposit = 0;
-        const result = validateDeposit(deposit);
-        expect(result).toBe("Error: Please ensure the deposit is greater than 0");
+    test("should return error message when borrowing amount is zero", () => {
+        const borrowingAmount = 0;
+        const result = validateBorrowingAmount(borrowingAmount);
+        expect(result).toBe("Error: Please ensure borrowing amount is greater than 0");
     });
 
-    test("should return null when deposit is valid", () => {
-        const deposit = 25000;
-        const result = validateDeposit(deposit);
-        expect(result).toBe(null);
+    test("should return error message when borrowing amount exceeds £5M", () => {
+        const borrowingAmount = 6000000;
+        const result = validateBorrowingAmount(borrowingAmount);
+        expect(result).toBe("Error: Please ensure borrowing amount is less than £5,000,000");
     });
 
-});
-
-describe('validateIncome', () => {
-
-    test("should return error message when income is non-int", () => {
-        const income = "abc";
-        const result = validateIncome(income);
-        expect(result).toBe("Error: Please enter a number for the income");
-    });
-
-    test("should return error message when income is negative", () => {
-        const income = -50000;
-        const result = validateIncome(income);
-        expect(result).toBe("Error: Please ensure income is greater than 0");
-    });
-
-    test("should return error message when income is zero", () => {
-        const income = 0;
-        const result = validateIncome(income);
-        expect(result).toBe("Error: Please ensure income is greater than 0");
-    });
-
-    test("should return null when income is valid", () => {
-        const income = 50000;
-        const result = validateIncome(income);
-        expect(result).toBe(null);
-    });
-
-});
-
-describe('validatePropertyPrice', () => {
-
-    test("should return error message when property price is non-int", () => {
-        const deposit = 50000;
-        const propertyPrice = "xyz";
-        const result = validatePropertyPrice(deposit, propertyPrice);
-        expect(result).toBe("Error: Please enter a number for the house price");
-    });
-
-    test("should return error message when property price is negative", () => {
-        const deposit = 50000;
-        const propertyPrice = -250000;
-        const result = validatePropertyPrice(deposit, propertyPrice);
-        expect(result).toBe("Error: Please ensure property price is greater than 0");
-    });
-
-    test("should return error message when property price is zero", () => {
-        const deposit = 50000;
-        const propertyPrice = 0;
-        const result = validatePropertyPrice(deposit, propertyPrice);
-        expect(result).toBe("Error: Please ensure property price is greater than 0");
-    });
-
-    test("should return error message when property price is less than deposit", () => {
-        const deposit = 50000;
-        const propertyPrice = 30000;
-        const result = validatePropertyPrice(deposit, propertyPrice);
-        expect(result).toBe("Error: Please ensure property price is greater than the deposit");
-    });
-
-    test("should return null when property price is valid", () => {
-        const deposit = 50000;
-        const propertyPrice = 250000;
-        const result = validatePropertyPrice(deposit, propertyPrice);
+    test("should return null when borrowing amount is valid", () => {
+        const borrowingAmount = 250000;
+        const result = validateBorrowingAmount(borrowingAmount);
         expect(result).toBe(null);
     });
 
@@ -112,19 +147,25 @@ describe('validateInterestRate', () => {
     test("should return error message when interest rate is negative", () => {
         const interestRate = -5;
         const result = validateInterestRate(interestRate);
-        expect(result).toBe("Error: Please ensure interest rate is greater than 0");
+        expect(result).toBe("Error: Please ensure interest rate is greater than 0%");
     });
 
     test("should return error message when interest rate is zero", () => {
         const interestRate = 0;
         const result = validateInterestRate(interestRate);
-        expect(result).toBe("Error: Please ensure interest rate is greater than 0");
+        expect(result).toBe("Error: Please ensure interest rate is greater than 0%");
     });
 
     test("should return null when interest rate is valid", () => {
         const interestRate = 5.5;
         const result = validateInterestRate(interestRate);
         expect(result).toBe(null);
+    });
+
+    test("should return error message when interest rate exceeds 20%", () => {
+        const interestRate = 25;
+        const result = validateInterestRate(interestRate);
+        expect(result).toBe("Error: Please ensure interest rate is less than 20%");
     });
 
 });

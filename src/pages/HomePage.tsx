@@ -4,7 +4,7 @@ import { formatCurrency } from "../utils/format";
 import { MortgageTable } from "../components/MortgageTable";
 import { InflectionPointChart } from "../components/InflectionPointChart";
 import { MilestoneChart } from "../components/MilestoneChart";
-
+import { validateBorrowingAmount, validateInterestRate, validateMortgageTerm } from "../utils/validation";
 
 // Form inputs are stored as strings to keep fields empty on page load
 // Numbers are converted when passed as arguments to calculateMortgageResults()
@@ -25,6 +25,10 @@ export function HomePage() {
 
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
+  const [borrowingAmountError, setBorrowingAmountError] = useState<string | null>(null);
+  const [interestRateError, setInterestRateError] = useState<string | null>(null);
+  const [mortgageTermError, setMortgageTermError] = useState<string | null>(null);
+
   let results = null;
   if (hasSubmitted) {
     results = calculateMortgageResults(
@@ -41,6 +45,19 @@ export function HomePage() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    const borrowingError = validateBorrowingAmount(formData.borrowingAmount);
+    const rateError = validateInterestRate(formData.interestRate);
+    const termError = validateMortgageTerm(formData.mortgageTerm);
+
+    setBorrowingAmountError(borrowingError);
+    setInterestRateError(rateError);
+    setMortgageTermError(termError);
+
+    if (borrowingError || rateError || termError) {
+      return;
+    }
+
     setHasSubmitted(true);
 
     setTimeout(() => {
@@ -67,6 +84,9 @@ export function HomePage() {
               onChange={handleChange}
               className="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
             />
+            {borrowingAmountError && (
+              <p className="text-red-600 text-sm mt-1">{borrowingAmountError}</p>
+            )}
           </div>
 
           <div>
@@ -80,6 +100,9 @@ export function HomePage() {
               onChange={handleChange}
               className="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
             />
+            {interestRateError && (
+              <p className="text-red-600 text-sm mt-1">{interestRateError}</p>
+            )}
           </div>
 
           <div>
@@ -92,6 +115,9 @@ export function HomePage() {
               onChange={handleChange}
               className="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
             />
+            {mortgageTermError && (
+              <p className="text-red-600 text-sm mt-1">{mortgageTermError}</p>
+            )}
           </div>
 
           <button type="submit" className="w-full bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition font-medium">
